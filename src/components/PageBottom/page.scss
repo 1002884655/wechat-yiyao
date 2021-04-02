@@ -1,0 +1,33 @@
+.PageBottom {
+  position: relative;
+  overflow: hidden;
+  padding: 0 30px;
+  > text {
+    display: block;
+    text-align: center;
+    font-size: 28px;
+    color: #999;
+    border-top: 2px solid #eee;
+    line-height: 40px;
+    padding-top: 20px;
+  }
+  > view {
+    font-size: 0;
+    white-space: nowrap;
+    margin-top: 20px;
+    padding-bottom: 40px;
+    text-align: center;
+    > text {
+      display: inline-block;
+      vertical-align: middle;
+      font-size: 40px;
+      line-height: 60px;
+      margin-left: 30px;
+      color: #12cfe7;
+      &:first-child {
+        margin-left: 0;
+        color: #11c23f;
+      }
+    }
+  }
+}

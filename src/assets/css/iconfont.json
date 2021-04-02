@@ -1,0 +1,121 @@
+{
+  "id": "2461480",
+  "name": "医药平台",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "637798",
+      "name": "微信",
+      "font_class": "weixin",
+      "unicode": "e62a",
+      "unicode_decimal": 58922
+    },
+    {
+      "icon_id": "1898963",
+      "name": "qq",
+      "font_class": "qq",
+      "unicode": "e6fd",
+      "unicode_decimal": 59133
+    },
+    {
+      "icon_id": "720985",
+      "name": "首页",
+      "font_class": "zhuye",
+      "unicode": "e61a",
+      "unicode_decimal": 58906
+    },
+    {
+      "icon_id": "881745",
+      "name": "搜索",
+      "font_class": "sousuo",
+      "unicode": "e6e3",
+      "unicode_decimal": 59107
+    },
+    {
+      "icon_id": "1277603",
+      "name": "学位",
+      "font_class": "xuewei",
+      "unicode": "e613",
+      "unicode_decimal": 58899
+    },
+    {
+      "icon_id": "2076312",
+      "name": " 我的",
+      "font_class": "wode",
+      "unicode": "e8a0",
+      "unicode_decimal": 59552
+    },
+    {
+      "icon_id": "3879034",
+      "name": "体检管理",
+      "font_class": "tijian",
+      "unicode": "e63b",
+      "unicode_decimal": 58939
+    },
+    {
+      "icon_id": "4333444",
+      "name": "收藏",
+      "font_class": "shoucang",
+      "unicode": "e60a",
+      "unicode_decimal": 58890
+    },
+    {
+      "icon_id": "6129329",
+      "name": "283用户资料、个人信息、个人资料",
+      "font_class": "jichuxinxi",
+      "unicode": "e7ea",
+      "unicode_decimal": 59370
+    },
+    {
+      "icon_id": "9673157",
+      "name": "关  闭",
+      "font_class": "guanbi",
+      "unicode": "e607",
+      "unicode_decimal": 58887
+    },
+    {
+      "icon_id": "12686748",
+      "name": "箭头",
+      "font_class": "jiantouleft",
+      "unicode": "e64a",
+      "unicode_decimal": 58954
+    },
+    {
+      "icon_id": "15659289",
+      "name": "阅读",
+      "font_class": "yuedu",
+      "unicode": "e6b6",
+      "unicode_decimal": 59062
+    },
+    {
+      "icon_id": "18261776",
+      "name": "面性医生图标3",
+      "font_class": "jiuzhen",
+      "unicode": "e6a3",
+      "unicode_decimal": 59043
+    },
+    {
+      "icon_id": "20764695",
+      "name": "箭头",
+      "font_class": "jiantouup",
+      "unicode": "e8a1",
+      "unicode_decimal": 59553
+    },
+    {
+      "icon_id": "20764698",
+      "name": "箭头",
+      "font_class": "jiantoudown",
+      "unicode": "e8a2",
+      "unicode_decimal": 59554
+    },
+    {
+      "icon_id": "20764712",
+      "name": "箭头",
+      "font_class": "jiantouright",
+      "unicode": "e8a3",
+      "unicode_decimal": 59555
+    }
+  ]
+}
