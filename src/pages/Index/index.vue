@@ -6,7 +6,7 @@
       <view class="flex-h">
         <text class="iconfont iconsousuo"></text>
         <view class="flex-item">
-          <navigator url="/pages/Index/Search/index">搜索你感兴趣的内容</navigator>
+          <navigator url="/pages/Index/Search/index" hover-class="none">搜索你感兴趣的内容</navigator>
         </view>
       </view>
     </view>
@@ -37,14 +37,14 @@
               </view>
               <view class="ListContainer">
                 <scroll-view class="ScrollContainer" scroll-x="true" style="width: 100%">
-                  <view class="RecommendItem" v-for="(item, index) in 10">
+                  <navigator class="RecommendItem" v-for="(item, index) in 10" :key="index" :url="`/pages/Index/BookDetail/index?id=${null}`" hover-class="none">
                     <view class="Img">
                       <image mode="aspectFill" :src="null" class="centerLabel"></image>
                     </view>
                     <view class="Title">
                       <text>书名</text>
                     </view>
-                  </view>
+                  </navigator>
                 </scroll-view>
               </view>
             </view>

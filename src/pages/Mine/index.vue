@@ -18,7 +18,7 @@
             <view class="School flex-h">
               <text>学校：</text>
               <text class="flex-item">xxx大学</text>
-              <navigator url="">
+              <navigator url="/pages/Mine/MyInfo/index" hover-class="none">
                 <text>完善信息</text>
                 <text class="iconfont iconjiantouright"></text>
               </navigator>
@@ -48,7 +48,7 @@
 
         <!-- 用户选项 -->
         <view class="UserOption">
-          <navigator v-for="(item, index) in UserOption" :key="index" class="flex-h" :url="item.url">
+          <navigator v-for="(item, index) in UserOption" :key="index" class="flex-h" :url="item.url" hover-class="none">
             <view class="flex-h">
               <text class="iconfont" :class="item.icon"></text>
               <text class="flex-item">{{item.name}}</text>
@@ -73,9 +73,9 @@ export default {
       UserOption: [
         { name: '我的收藏', icon: 'iconshoucang', url: '/pages/Mine/MyCollected/index' },
         { name: '我的阅读', icon: 'iconyuedu', url: '/pages/Mine/MyReaded/index' },
-        { name: '我的就诊', icon: 'iconjiuzhen', url: '' },
-        { name: '我的体检', icon: 'icontijian', url: '' },
-        { name: '基础信息', icon: 'iconjichuxinxi', url: '' }
+        { name: '我的就诊', icon: 'iconjiuzhen', url: '/pages/Mine/MyDoctorVisit/index' },
+        { name: '我的体检', icon: 'icontijian', url: '/pages/Mine/MyBodyCheck/index' },
+        { name: '基础信息', icon: 'iconjichuxinxi', url: '/pages/Mine/MyInfo/index' }
       ]
     }
   },

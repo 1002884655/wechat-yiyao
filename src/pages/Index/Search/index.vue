@@ -22,7 +22,7 @@
               <text>热门搜索</text>
             </view>
             <view class="List">
-              <navigator url="" v-for="(item, index) in 10" :key="index">关键词</navigator>
+              <navigator url="" v-for="(item, index) in 10" :key="index" hover-class="none">关键词</navigator>
             </view>
           </view>
 
@@ -32,7 +32,7 @@
               <text>最近搜索</text>
             </view>
             <view class="List">
-              <navigator url="" v-for="(item, index) in 10" :key="index">关键词</navigator>
+              <navigator url="" v-for="(item, index) in 10" :key="index" hover-class="none">关键词</navigator>
             </view>
           </view>
 

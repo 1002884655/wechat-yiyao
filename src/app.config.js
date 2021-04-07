@@ -1,14 +1,18 @@
 
 export default {
   pages: [
-    'pages/Mine/MyReaded/index', // 我的阅读
     'pages/Index/index', // 首页
     'pages/Index/Search/index', // 搜索页
+    'pages/Index/BookDetail/index', // 详情
 
     'pages/Study/index', // 学习天地
 
     'pages/Mine/index', // 我的
     'pages/Mine/MyCollected/index', // 我的收藏
+    'pages/Mine/MyReaded/index', // 我的阅读
+    'pages/Mine/MyDoctorVisit/index', // 我的就诊
+    'pages/Mine/MyBodyCheck/index', // 我的体检
+    'pages/Mine/MyInfo/index', // 基础信息
   ],
   tabBar: {
     color: '#666666',

@@ -3,7 +3,7 @@
     <scroll-view scroll-y="true" style="height: 100%;" :refresher-enabled="true" @refresherrefresh="OnRefresh" :refresher-triggered="IsPull" refresher-background="none" refresher-default-style="black">
       <view class="Content">
         <view class="ListItem" v-for="(item, index) in PageList" :key="index">
-          <ReadedItem></ReadedItem>
+          <BodyCheckItem></BodyCheckItem>
         </view>
       </view>
       <PageBottom></PageBottom>
@@ -12,12 +12,12 @@
 </template>
 
 <script>
-import ReadedItem from '../../../components/ReadedItem'
+import BodyCheckItem from '../../../components/BodyCheckItem'
 import PageBottom from '../../../components/PageBottom'
 import { createNamespacedHelpers } from 'vuex'
 const { mapState: mapUserState, mapActions: mapUserActions, mapMutations: mapUserMutations } = createNamespacedHelpers('user')
 export default {
-  name: 'MyReaded',
+  name: 'MyDoctorVisit',
   data () {
     return {
       IsPull: false,
@@ -30,7 +30,7 @@ export default {
     })
   },
   components: {
-    ReadedItem,
+    BodyCheckItem,
     PageBottom
   },
   created () {

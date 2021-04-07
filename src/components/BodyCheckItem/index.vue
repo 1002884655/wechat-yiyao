@@ -1,22 +1,16 @@
 <template>
-  <navigator class="BookItem flex-h" :url="`/pages/Index/BookDetail/index?id=${null}`" hover-class="none">
-    <view class="Img">
-      <image mode="aspectFill" :src="null" class="centerLabel"></image>
-    </view>
+  <view class="BodyCheckItem flex-h">
     <view class="flex-item">
-      <view class="Title">
-        <text>书名</text>
-      </view>
-      <view class="Desc">
-        <text>简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介</text>
-      </view>
+      <text>用户名</text>
+      <text>2020-08-08 22:22:22</text>
     </view>
-  </navigator>
+    <navigator url="" hover-class="none">查看报告</navigator>
+  </view>
 </template>
 
 <script>
 export default {
-  name: 'BookItem',
+  name: 'BodyCheckItem',
   props: {
     Data: {
       default: () => {

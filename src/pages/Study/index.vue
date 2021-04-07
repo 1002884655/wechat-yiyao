@@ -6,7 +6,7 @@
       <view class="flex-h">
         <text class="iconfont iconsousuo"></text>
         <view class="flex-item">
-          <navigator url="/pages/Index/Search/index">搜索你感兴趣的内容</navigator>
+          <navigator url="/pages/Index/Search/index" hover-class="none">搜索你感兴趣的内容</navigator>
         </view>
       </view>
     </view>
