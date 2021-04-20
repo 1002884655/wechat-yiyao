@@ -22,6 +22,7 @@ export default {
   components: {
   },
   created () {
+    this.Init()
   },
   methods: {
     Init () {

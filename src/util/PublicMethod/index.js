@@ -17,7 +17,20 @@ const ToolClass = {
       return acc.replace(re, args[k])
     }, url)
   },
-  WxRequest (config) { // 网络请求
+  WxRequest (config) {
+    this.ToolRequest({
+      url: config.url,
+      method: config.method,
+      ...(config.data || {}),
+      success (res) {
+        config.success(res)
+      },
+      error (res) {
+        config.error(res)
+      }
+    })
+  },
+  ToolRequest (config) { // 网络请求
     let _that = this
     let urlData = qs.stringify(config.urlData)
     let queryData = qs.stringify(config.queryData)
@@ -33,7 +46,7 @@ const ToolClass = {
     }
     let Header = {}
     if (wx.getStorageSync('token') !== '' && wx.getStorageSync('tokentime') !== '' && wx.getStorageSync('tokentime') - 0 + 24 * 60 * 60 * 1000 >= Date.now()) { // 本地获取token
-      Header['X-Authorization-Jwt'] = wx.getStorageSync('token')
+      Header['X-Authorization-JWT'] = wx.getStorageSync('token')
     }
     wx.request({
       url: `${SERVER_API}${config.url}`,
@@ -41,7 +54,7 @@ const ToolClass = {
       ...(config.data || {}),
       header: { ...Header },
       success: (res) => {
-        const token = res.header['X-Authorization-Jwt'] || res.header['X-Authorization-JWT']
+        const token = res.header['X-Authorization-JWT'] || res.header['X-Authorization-Jwt']
         if (token) { // 更新本地存储token
           wx.setStorageSync('token', token)
           wx.setStorageSync('tokentime', Date.now())
@@ -53,7 +66,7 @@ const ToolClass = {
           //       url: `${SERVER_API}/login?code=${subRes.code}`,
           //       method: `post`,
           //       success: (cRes) => {
-          //         const token = cRes.header['X-Authorization-Jwt'] || cRes.header['X-Authorization-JWT']
+          //         const token = cRes.header['X-Authorization-JWT'] || cRes.header['X-Authorization-JWT']
           //         if (token) { // 更新本地存储token
           //           wx.setStorageSync('token', token)
           //           _that.WxRequest(config) // 获得token之后重新请求接口
@@ -76,11 +89,12 @@ const ToolClass = {
         }
       },
       fail: (res) => {
-        if (res.header['X-Authorization-Jwt'] !== undefined) { // 更新本地存储token
-          wx.setStorageSync('token', res.header['X-Authorization-Jwt'])
+        if (res.header['X-Authorization-JWT'] !== undefined) { // 更新本地存储token
+          wx.setStorageSync('token', res.header['X-Authorization-JWT'])
         }
         if (res.data.code - 0 === 1001) { // token失效
-          wx.navigateTo({ url: '../../pages/SignIn/index' })
+          // wx.navigateTo({ url: '../../pages/SignIn/index' })
+          config.error('登录失效')
         }
         if (config.error !== undefined) {
           config.error(res)

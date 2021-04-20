@@ -3,7 +3,7 @@ module.exports = {
     NODE_ENV: '"production"'
   },
   defineConstants: {
-    SERVER_API: '"https://outer.fangdeal.cn/liyuanhui/api/wx"'
+    SERVER_API: '"http://medical.p.njyunzhi.com"'
   },
   mini: {},
   h5: {

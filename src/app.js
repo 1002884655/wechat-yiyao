@@ -2,6 +2,8 @@ import Taro from '@tarojs/taro'
 import Vue from 'vue'
 import { vueAuthPlugin } from '@/util/auth-plugin'
 import store from './store/index'
+import { createNamespacedHelpers } from 'vuex'
+const { mapState: mapUserState, mapActions: mapUserActions, mapMutations: mapUserMutations } = createNamespacedHelpers('user')
 
 import './app.scss'
 import './assets/css/iconfont.css'
@@ -17,20 +19,34 @@ Vue.use(vueAuthPlugin)
 const App = new Vue({
   store,
   onLaunch (options) {
-    this.login(options)
+    // console.log(`options is`, options)
+    // this.login(options)
   },
   render (h) {
     // this.$slots.default 是将要会渲染的页面
     return h('block', this.$slots.default)
   },
+  computed: {
+    ...mapUserState({
+      UserInfo: x => x.UserInfo // 用户信息
+    })
+  },
   methods: {
+    ...mapUserActions([
+      'WxGetPhoneAuth',
+      'WxLogin'
+    ]),
     login (options) {
-      Taro.login({
+      const _that = this
+      wx.login({
         success (res) {
           if (res.code) {
-            console.log(`登录成功，登录信息${res}`)
+            _that.WxLogin({ queryData: { code: res.code } }).then((res) => {
+              wx.setStorageSync('token', res.data.data.token)
+              wx.setStorageSync('tokentime', Date.now())
+            })
           } else {
-            Taro.showToast({
+            wx.showToast({
               title: '初始化失败, 请退出重试',
               icon: 'none',
               duration: 3000
