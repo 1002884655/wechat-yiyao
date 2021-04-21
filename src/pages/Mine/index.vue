@@ -1,68 +1,71 @@
 <template>
   <view class="page">
-    <scroll-view scroll-y="true" style="height: 100%;" :refresher-enabled="true" @refresherrefresh="OnRefresh" :refresher-triggered="IsPull" refresher-background="#f4c819" refresher-default-style="white">
-      <view class="Content">
+    <MainPage @UserInfoChange="Init">
+      <scroll-view scroll-y="true" style="height: 100%;" :refresher-enabled="true" @refresherrefresh="OnRefresh" :refresher-triggered="IsPull" refresher-background="#f4c819" refresher-default-style="white">
+        <view class="Content">
 
-        <!-- 头部 -->
-        <view class="TopContainer">
-          <view class="UserIcon">
-            <image mode="aspectFill" :src="null" class="centerLabel"></image>
+          <!-- 头部 -->
+          <view class="TopContainer">
+            <view class="UserIcon">
+              <image mode="aspectFill" :src="UserInfo.avatar" class="centerLabel"></image>
+            </view>
+            <view class="UserName">{{UserInfo.nickName || '-'}}</view>
+            <view class="UserNo">学号：{{UserInfo.studentId || '-'}}</view>
           </view>
-          <view class="UserName">用户名</view>
-          <view class="UserNo">学号：123456789</view>
-        </view>
 
-        <!-- 信息卡 -->
-        <view class="UserInfoCard">
-          <view>
-            <view class="School flex-h">
-              <text>学校：</text>
-              <text class="flex-item">xxx大学</text>
-              <navigator url="/pages/Mine/MyInfo/index" hover-class="none">
-                <text>完善信息</text>
+          <!-- 信息卡 -->
+          <view class="UserInfoCard">
+            <view>
+              <view class="School flex-h">
+                <text>学校：</text>
+                <text class="flex-item">{{UserInfo.schoolName || '-'}}</text>
+                <navigator url="/pages/Mine/MyInfo/index" hover-class="none">
+                  <text>完善信息</text>
+                  <text class="iconfont iconjiantouright"></text>
+                </navigator>
+              </view>
+              <view class="OtherInfo flex-h">
+                <view>
+                  <view class="flex-h">
+                    <text>专业：</text>
+                    <text class="flex-item">{{UserInfo.specialtyName || '-'}}</text>
+                  </view>
+                  <view class="flex-h">
+                    <text>手机号：</text>
+                    <text class="flex-item">{{UserInfo.phone || '-'}}</text>
+                  </view>
+                  <view class="flex-h">
+                    <text>学届：</text>
+                    <text class="flex-item">{{UserInfo.schoolBatch}}</text>
+                  </view>
+                </view>
+                <view class="flex-item">
+                  <text>积分</text>
+                  <text>{{UserInfo.personData ? UserInfo.personData.pointNum : '-'}}</text>
+                </view>
+              </view>
+            </view>
+          </view>
+
+          <!-- 用户选项 -->
+          <view class="UserOption">
+            <navigator v-for="(item, index) in UserOption" :key="index" class="flex-h" :url="item.url" hover-class="none">
+              <view class="flex-h">
+                <text class="iconfont" :class="item.icon"></text>
+                <text class="flex-item">{{item.name}}</text>
                 <text class="iconfont iconjiantouright"></text>
-              </navigator>
-            </view>
-            <view class="OtherInfo flex-h">
-              <view>
-                <view class="flex-h">
-                  <text>专业：</text>
-                  <text class="flex-item">计算机科学与技术</text>
-                </view>
-                <view class="flex-h">
-                  <text>手机号：</text>
-                  <text class="flex-item">18267901393</text>
-                </view>
-                <view class="flex-h">
-                  <text>学届：</text>
-                  <text class="flex-item">2011</text>
-                </view>
               </view>
-              <view class="flex-item">
-                <text>积分</text>
-                <text>0</text>
-              </view>
-            </view>
+            </navigator>
           </view>
-        </view>
 
-        <!-- 用户选项 -->
-        <view class="UserOption">
-          <navigator v-for="(item, index) in UserOption" :key="index" class="flex-h" :url="item.url" hover-class="none">
-            <view class="flex-h">
-              <text class="iconfont" :class="item.icon"></text>
-              <text class="flex-item">{{item.name}}</text>
-              <text class="iconfont iconjiantouright"></text>
-            </view>
-          </navigator>
         </view>
-
-      </view>
-    </scroll-view>
+      </scroll-view>
+    </MainPage>
   </view>
 </template>
 
 <script>
+import MainPage from '../../components/MainPage'
 import { createNamespacedHelpers } from 'vuex'
 const { mapState: mapUserState, mapActions: mapUserActions, mapMutations: mapUserMutations } = createNamespacedHelpers('user')
 export default {
@@ -85,6 +88,7 @@ export default {
     })
   },
   components: {
+    MainPage
   },
   created () {
   },
@@ -94,10 +98,16 @@ export default {
   },
   methods: {
     ...mapUserActions([
+      'GetCurrentPersonInfo'
     ]),
     ...mapUserMutations([
     ]),
     Init () {
+      console.log(111)
+      if (this.UserInfo !== null) {
+        console.log(222)
+        this.GetCurrentPersonInfo()
+      }
     },
     OnRefresh (e) {
       this.IsPull = true

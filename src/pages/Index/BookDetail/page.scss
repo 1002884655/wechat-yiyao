@@ -112,6 +112,9 @@
         line-height: 40px;
         &:first-child {
           font-size: 36px;
+          &.active {
+            color: #f4c819;
+          }
         }
       }
     }

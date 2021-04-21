@@ -1,6 +1,6 @@
 <template>
   <view class="page">
-    <MainPage>
+    <MainPage @UserInfoChange="Init">
       <view class="page flex-v">
         <!-- 内容 -->
         <view class="flex-item">
@@ -10,43 +10,43 @@
             <view class="FrontInfo">
               <view class="Img">
                 <view>
-                  <image mode="aspectFit" :src="null" class="centerLabel"></image>
+                  <image mode="aspectFit" :src="ArticleInfo.poster" class="centerLabel"></image>
                 </view>
               </view>
               <view class="SubInfo">
                 <view class="Tag">
                   <text class="iconfont iconbiaoqian"></text>
                   <text>分类：</text>
-                  <text>前沿科学</text>
+                  <text v-for="(item, index) in (ArticleInfo.tags || [])" :key="index">{{item}}</text>
                 </view>
                 <view class="flex-h">
                   <view class="flex-item flex-h">
                     <text>名称：</text>
-                    <text class="flex-item">xxx</text>
+                    <text class="flex-item">{{ArticleInfo.name}}</text>
                   </view>
                   <view class="flex-item flex-h">
                     <text>阅读量：</text>
-                    <text class="flex-item">123456</text>
+                    <text class="flex-item">{{ArticleInfo.answerNum}}</text>
                   </view>
                 </view>
                 <view class="flex-h">
                   <view class="flex-item flex-h">
                     <text>作者：</text>
-                    <text class="flex-item">xxx</text>
+                    <text class="flex-item">{{ArticleInfo.author}}</text>
                   </view>
                   <view class="flex-item flex-h">
                     <text>发布时间：</text>
-                    <text class="flex-item">2020-12-08</text>
+                    <text class="flex-item">{{ToolClass.DateFormat(ArticleInfo.publishDate, 'YY:MM:DD')}}</text>
                   </view>
                 </view>
                 <view class="Desc">
-                  <text>简介：xxxxxxxxxxx</text>
+                  <text>简介：{{ArticleInfo.summary}}</text>
                 </view>
               </view>
 
               <!-- 正文 -->
               <view class="Article">
-
+                <rich-text :nodes="ArticleInfo.content"></rich-text>
               </view>
 
             </view>
@@ -61,8 +61,8 @@
             <text class="iconfont iconfenxiang"></text>
             <text>分享</text>
           </view>
-          <view class="Like">
-            <text class="iconfont iconshoucang1"></text>
+          <view class="Like" @tap="TriggerSave">
+            <text class="iconfont iconshoucang1" :class="{'active': ArticleInfo.isSaved}"></text>
             <text>收藏</text>
           </view>
           <view class="flex-item"></view>
@@ -82,6 +82,7 @@
 </template>
 
 <script>
+import Taro from '@tarojs/taro'
 import MainPage from '../../../components/MainPage'
 import PageBottom from '../../../components/PageBottom'
 import { createNamespacedHelpers } from 'vuex'
@@ -90,7 +91,9 @@ export default {
   name: 'BookDetail',
   data () {
     return {
-      Timer: null
+      Timer: null,
+      ArticleInfo: {},
+      DataLock: false
     }
   },
   computed: {
@@ -110,10 +113,46 @@ export default {
   },
   methods: {
     ...mapUserActions([
+      'GetArticleDetail',
+      'SaveArticle',
+      'DeleteSaveArticle'
     ]),
     ...mapUserMutations([
     ]),
     Init () {
+      this.GetArticleDetail({ urlData: { id: Taro.getCurrentInstance().router.params.id } }).then((res) => {
+        this.ArticleInfo = res.data.data || {}
+      })
+    },
+    TriggerSave () {
+      if (!this.DataLock && this.ArticleInfo.postId) {
+        this.DataLock = true
+        if (this.ArticleInfo.isSaved) { // 取消收藏
+          this.DeleteSaveArticle({ queryData: { postId: this.ArticleInfo.postId } }).then(() => {
+            wx.showToast({
+              title: '取消收藏成功',
+              icon: 'none',
+              duration: 2000
+            })
+            this.ArticleInfo.isSaved = false
+            this.DataLock = false
+          }).catch(() => {
+            this.DataLock = false
+          })
+        } else { // 收藏
+          this.SaveArticle({ queryData: { postId: this.ArticleInfo.postId } }).then(() => {
+            wx.showToast({
+              title: '收藏成功',
+              icon: 'none',
+              duration: 2000
+            })
+            this.ArticleInfo.isSaved = true
+            this.DataLock = false
+          }).catch(() => {
+            this.DataLock = false
+          })
+        }
+      }
     }
   }
 }

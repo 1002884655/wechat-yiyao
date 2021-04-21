@@ -1,17 +1,20 @@
 <template>
   <view class="page">
-    <scroll-view scroll-y="true" style="height: 100%;" :refresher-enabled="true" @refresherrefresh="OnRefresh" :refresher-triggered="IsPull" refresher-background="none" refresher-default-style="black">
-      <view class="Content">
-        <view class="ListItem" v-for="(item, index) in PageList" :key="index">
-          <BodyCheckItem></BodyCheckItem>
+    <MainPage @UserInfoChange="Init">
+      <scroll-view scroll-y="true" style="height: 100%;" :refresher-enabled="true" @refresherrefresh="OnRefresh" @scrolltolower="Infinite" :refresher-triggered="IsPull" refresher-background="none" refresher-default-style="black">
+        <view class="Content">
+          <view class="ListItem" v-for="(item, index) in PageList" :key="index">
+            <BodyCheckItem :Data="item"></BodyCheckItem>
+          </view>
         </view>
-      </view>
-      <PageBottom></PageBottom>
-    </scroll-view>
+        <PageBottom></PageBottom>
+      </scroll-view>
+    </MainPage>
   </view>
 </template>
 
 <script>
+import MainPage from '../../../components/MainPage'
 import BodyCheckItem from '../../../components/BodyCheckItem'
 import PageBottom from '../../../components/PageBottom'
 import { createNamespacedHelpers } from 'vuex'
@@ -20,8 +23,15 @@ export default {
   name: 'MyDoctorVisit',
   data () {
     return {
+      IsInfinite: false,
       IsPull: false,
-      PageList: ['', '', '', '', '', '', '', '', '', '', '', '']
+      PageList: [],
+      PageData: {
+        pageSize: 10,
+        pageNum: 1
+      },
+      HasNextPage: true,
+      DataLock: false
     }
   },
   computed: {
@@ -30,6 +40,7 @@ export default {
     })
   },
   components: {
+    MainPage,
     BodyCheckItem,
     PageBottom
   },
@@ -41,16 +52,46 @@ export default {
   },
   methods: {
     ...mapUserActions([
+      'GetMyMedicalRecords'
     ]),
     ...mapUserMutations([
     ]),
     Init () {
+      if (this.UserInfo !== null && !this.DataLock) {
+        this.PageList = []
+        this.PageData.pageNum = 1
+        this.HasNextPage = true
+        this.ToGetPageList()
+      }
     },
-    OnRefresh (e) {
+    ToGetPageList () {
+      if (!this.DataLock && this.HasNextPage) {
+        this.DataLock = true
+        this.GetMyMedicalRecords({ queryData: { ...this.PageData } }).then((res) => {
+          this.PageList = this.PageList.concat(res.data.data.records || [])
+          this.HasNextPage = res.data.data.current - 0 < res.data.data.pages - 0
+          this.DataLock = false
+          this.IsPull = false
+          this.IsInfinite = false
+        }).catch(() => {
+          this.DataLock = false
+          this.IsPull = false
+          this.IsInfinite = false
+        })
+      }
+    },
+    OnRefresh () {
       this.IsPull = true
-      window.setTimeout(() => {
-        this.IsPull = false
-      }, 1000)
+      this.Init()
+    },
+    Infinite () {
+      if (this.HasNextPage && !this.IsInfinite && !this.DataLock) {
+        this.IsInfinite = true
+        this.PageData.pageNum += 1
+        this.ToGetPageList()
+      } else {
+        this.IsInfinite = false
+      }
     }
   }
 }

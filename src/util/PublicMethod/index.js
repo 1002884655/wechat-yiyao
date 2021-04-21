@@ -1,13 +1,19 @@
 import qs from 'qs'
 const ToolClass = {
-  DateFormat (timestamp) { // 格式化时间
+  DateFormat (timestamp, type = 'YY:MM:DD hh:mm:ss') { // 格式化时间
     if (timestamp) {
       let YY = new Date(timestamp).getFullYear()
       let MM = new Date(timestamp).getMonth() + 1
       let DD = new Date(timestamp).getDate()
       let hh = new Date(timestamp).getHours()
       let mm = new Date(timestamp).getMinutes()
-      return `${YY}-${MM > 9 ? MM : '0' + MM}-${DD > 9 ? DD : '0' + DD} ${hh > 9 ? hh : '0' + hh}:${mm > 9 ? mm : '0' + mm}`
+      if (type === 'YY:MM:DD') {
+        return `${YY}-${MM > 9 ? MM : '0' + MM}-${DD > 9 ? DD : '0' + DD}`
+      } else if (type === 'hh:mm:ss') {
+        return `${hh > 9 ? hh : '0' + hh}:${mm > 9 ? mm : '0' + mm}`
+      } else {
+        return `${YY}-${MM > 9 ? MM : '0' + MM}-${DD > 9 ? DD : '0' + DD} ${hh > 9 ? hh : '0' + hh}:${mm > 9 ? mm : '0' + mm}`
+      }
     }
   },
   ReplaceURLParams (url, params) {

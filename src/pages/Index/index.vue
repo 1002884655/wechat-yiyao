@@ -25,7 +25,7 @@
                     <swiper :indicator-dots="true" :autoplay="true" :interval="3000">
                       <swiper-item v-for="(item, index) in BannerList" :key="index">
                         <view class="BannerItem">
-                          <image mode="aspectFill" :src="null" class="centerLabel"></image>
+                          <image mode="aspectFill" :src="item.image" class="centerLabel"></image>
                         </view>
                       </swiper-item>
                     </swiper>
@@ -39,12 +39,12 @@
                   </view>
                   <view class="ListContainer">
                     <scroll-view class="ScrollContainer" scroll-x="true" style="width: 100%">
-                      <navigator class="RecommendItem" v-for="(item, index) in 10" :key="index" :url="`/pages/Index/BookDetail/index?id=${null}`" hover-class="none">
+                      <navigator class="RecommendItem" v-for="(item, index) in HotList" :key="index" :url="`/pages/Index/BookDetail/index?id=${item.targetId}`" hover-class="none">
                         <view class="Img">
-                          <image mode="aspectFill" :src="null" class="centerLabel"></image>
+                          <image mode="aspectFill" :src="item.poster" class="centerLabel"></image>
                         </view>
                         <view class="Title">
-                          <text>书名</text>
+                          <text>{{item.targetTitle}}</text>
                         </view>
                       </navigator>
                     </scroll-view>
@@ -57,8 +57,8 @@
                     <text>最新文章</text>
                   </view>
                   <view class="ListContainer">
-                    <view class="ArticleItem flex-h" v-for="(item, index) in 10">
-                      <BookItem></BookItem>
+                    <view class="ArticleItem flex-h" v-for="(item, index) in NewestArticleList">
+                      <BookItem :Data="item"></BookItem>
                     </view>
                   </view>
                 </view>
@@ -81,12 +81,15 @@ import BookItem from '../../components/BookItem'
 import PageBottom from '../../components/PageBottom'
 import { createNamespacedHelpers } from 'vuex'
 const { mapState: mapUserState, mapActions: mapUserActions, mapMutations: mapUserMutations } = createNamespacedHelpers('user')
+const { mapActions: mapIndexActions } = createNamespacedHelpers('index')
 export default {
   name: 'Index',
   data () {
     return {
       IsPull: false,
-      BannerList: ['', '', '', '']
+      BannerList: [],
+      HotList: [],
+      NewestArticleList: []
     }
   },
   computed: {
@@ -110,8 +113,21 @@ export default {
     ]),
     ...mapUserMutations([
     ]),
+    ...mapIndexActions([
+      'GetIndexBanner',
+      'GetIndexHotList',
+      'GetIndexNewestArticle'
+    ]),
     UserInfoChange () {
-      console.log(this.UserInfo)
+      this.GetIndexBanner().then((res) => {
+        this.BannerList = [...res.data.data]
+      })
+      this.GetIndexHotList().then((res) => {
+        this.HotList = [...res.data.data]
+      })
+      this.GetIndexNewestArticle({ urlData: { pageSize: 10, pageNum: 1 } }).then((res) => {
+        this.NewestArticleList = [...res.data.data.records]
+      })
     },
     Init () {
     },

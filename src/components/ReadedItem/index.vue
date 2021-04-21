@@ -1,17 +1,17 @@
 <template>
-  <navigator class="ReadedItem flex-h" :url="`/pages/Index/BookDetail/index?id=${null}`" hover-class="none">
+  <navigator class="ReadedItem flex-h" :url="`/pages/Index/BookDetail/index?id=${Data.postId}`" hover-class="none">
     <view class="Img">
-      <image mode="aspectFill" :src="null" class="centerLabel"></image>
+      <image mode="aspectFill" :src="Data.poster" class="centerLabel"></image>
     </view>
     <view class="flex-item">
       <view class="Title">
-        <text>名称：书名</text>
+        <text>名称：{{Data.name}}</text>
       </view>
       <view class="Desc">
-        <text>作者：xxxx</text>
+        <text>作者：{{Data.author}}</text>
       </view>
       <view class="Desc">
-        <text>类型：xxxx</text>
+        <text>类型：{{Data.tags && Data.tags.length ? Data.tags[0] : '-'}}</text>
       </view>
     </view>
     <view class="ProgressContainer">

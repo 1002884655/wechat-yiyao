@@ -6,7 +6,7 @@
         <text>授权手机号</text>
         <text>申请使用您的手机号</text>
         <view class="flex-h">
-          <text>拒绝</text>
+          <text @tap="ShowPhoneAuthPopup = false; $emit('UserInfoChange')">拒绝</text>
           <view class="flex-item"></view>
           <text>允许</text>
           <button open-type="getUserInfo" @getuserinfo="GetUserPhone">获取授权</button>
@@ -18,7 +18,7 @@
         <text>授权头像</text>
         <text>申请使用您的头像</text>
         <view class="flex-h">
-          <text>拒绝</text>
+          <text @tap="ShowUserIconAuthPopup = false; $emit('UserInfoChange')">拒绝</text>
           <view class="flex-item"></view>
           <text>允许</text>
           <button open-type="getUserInfo" @getuserinfo="GetUserIcon">获取授权</button>
@@ -73,29 +73,42 @@ export default {
     ]),
     Init () {
       const _that = this
-      wx.login({
-        success (res) {
-          _that.WxLogin({ queryData: { code: res.code } }).then((res) => {
-            wx.setStorageSync('token', res.data.data.token)
-            wx.setStorageSync('tokentime', Date.now())
-            let CurrentPageRoute = Taro.getCurrentPages()[Taro.getCurrentPages().length - 1].route
-            // if (CurrentPageRoute !== 'pages/Index/index') { // 非首页
-            if (CurrentPageRoute !== '') { // 非首页
-              if (!_that.UserInfo.avatar) { // 未授权头像
-                console.log('需要获取头像授权')
-                _that.ShowUserIconAuthPopup = true
-              } else if (!_that.UserInfo.phone) { // 未授权手机号
-                console.log('需要获取手机号授权')
-                _that.ShowPhoneAuthPopup = true
+      let CurrentPageRoute = Taro.getCurrentPages()[Taro.getCurrentPages().length - 1].route
+      if (this.UserInfo === null) {
+        wx.login({
+          success (res) {
+            _that.WxLogin({ queryData: { code: res.code } }).then((res) => {
+              wx.setStorageSync('token', res.data.data.token)
+              wx.setStorageSync('tokentime', Date.now())
+              if (CurrentPageRoute !== 'pages/Index/index') { // 非首页
+                // if (CurrentPageRoute !== '') { // 非首页
+                if (!_that.UserInfo.avatar) { // 未授权头像
+                  _that.ShowUserIconAuthPopup = true
+                } else if (!_that.UserInfo.phone) { // 未授权手机号
+                  _that.ShowPhoneAuthPopup = true
+                } else {
+                  _that.$emit('UserInfoChange')
+                }
               } else {
                 _that.$emit('UserInfoChange')
               }
-            } else {
-              _that.$emit('UserInfoChange')
-            }
-          })
+            })
+          }
+        })
+      } else {
+        if (CurrentPageRoute !== 'pages/Index/index') { // 非首页
+          // if (CurrentPageRoute !== '') { // 非首页
+          if (!_that.UserInfo.avatar) { // 未授权头像
+            _that.ShowUserIconAuthPopup = true
+          } else if (!_that.UserInfo.phone) { // 未授权手机号
+            _that.ShowPhoneAuthPopup = true
+          } else {
+            _that.$emit('UserInfoChange')
+          }
+        } else {
+          _that.$emit('UserInfoChange')
         }
-      })
+      }
     },
     GetUserIcon (e) {
       if (e.detail.userInfo.avatarUrl) {
@@ -117,7 +130,21 @@ export default {
         this.WxInfoData[key] = e.detail[key]
       }
       this.WxGetPhoneAuth({ data: { data: { ...this.WxInfoData, sessionKey: this.UserInfo.sessionKey } } }).then((res) => {
-        console.log(res.data.data)
+        if (res.data.data.phone) {
+          this.UpdateUserInfo({ data: { data: { phone: res.data.data.phone, personId: this.UserInfo.personId } } }).then(() => {
+            this.EditUserInfo({ name: 'phone', value: res.data.data.phone })
+            this.ShowPhoneAuthPopup = false
+            this.$emit('UserInfoChange')
+          })
+        } else {
+          wx.showToast({
+            title: '获取手机号失败',
+            icon: 'none',
+            duration: 2000
+          })
+          this.ShowPhoneAuthPopup = false
+          this.$emit('UserInfoChange')
+        }
       })
     }
   }
