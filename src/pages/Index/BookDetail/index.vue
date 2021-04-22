@@ -1,6 +1,6 @@
 <template>
   <view class="page">
-    <MainPage @UserInfoChange="Init">
+    <MainPage ref="MainPage" @UserInfoChange="Init">
       <view class="page flex-v">
         <!-- 内容 -->
         <view class="flex-item">
@@ -120,9 +120,14 @@ export default {
     ...mapUserMutations([
     ]),
     Init () {
-      this.GetArticleDetail({ urlData: { id: Taro.getCurrentInstance().router.params.id } }).then((res) => {
-        this.ArticleInfo = res.data.data || {}
-      })
+      if (this.UserInfo !== null) {
+        this.GetArticleDetail({ urlData: { id: Taro.getCurrentInstance().router.params.id } }).then((res) => {
+          this.ArticleInfo = res.data.data || {}
+        })
+        if (this.UserInfo.studentId === null || this.UserInfo.studentId === '') {
+          this.$refs.MainPage.ShowStudentIdPopup = true
+        }
+      }
     },
     TriggerSave () {
       if (!this.DataLock && this.ArticleInfo.postId) {

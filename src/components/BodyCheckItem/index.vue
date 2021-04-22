@@ -1,8 +1,8 @@
 <template>
   <view class="BodyCheckItem flex-h">
     <view class="flex-item">
-      <text>用户名</text>
-      <text>2020-08-08 22:22:22</text>
+      <text>{{Data.name}}</text>
+      <text>{{ToolClass.DateFormat(Data.createDate)}}</text>
     </view>
     <navigator url="" hover-class="none">查看报告</navigator>
   </view>

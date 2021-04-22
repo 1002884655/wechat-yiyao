@@ -25,6 +25,15 @@
         </view>
       </view>
     </view>
+    <view class="StudentIdPopup" v-show="ShowStudentIdPopup">
+      <view class="centerLabel">
+        <text>完善信息</text>
+        <text>去完善您的个人信息</text>
+        <view>
+          <navigator url="/pages/Mine/MyInfo/index">去完善</navigator>
+        </view>
+      </view>
+    </view>
   </view>
 </template>
 
@@ -44,6 +53,7 @@ export default {
     return {
       ShowPhoneAuthPopup: false,
       ShowUserIconAuthPopup: false,
+      ShowStudentIdPopup: false,
       WxInfoData: {
         encryptedData: null,
         iv: null,

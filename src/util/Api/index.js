@@ -61,7 +61,11 @@ const Api = {
   GetMyMedicalRecords: { // 获取我的就诊记录
     method: 'get',
     url: `${prefix}/ma/medical-log`
-  }
+  },
+  // GetMyBodyCheckList: { // 获取我的体检记录
+  //   method: 'get',
+  //   url: `${prefix}/ma/medical-log`
+  // }
 }
 
 export default Api

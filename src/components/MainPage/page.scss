@@ -4,7 +4,8 @@
   position: relative;
   overflow: hidden;
   > .PhoneAuthPopup,
-  > .UserIconAuthPopup {
+  > .UserIconAuthPopup,
+  > .StudentIdPopup {
     width: 100%;
     position: fixed;
     left: 0;
@@ -30,7 +31,7 @@
           line-height: 60px;
         }
       }
-      > .flex-h {
+      > view {
         padding: 0 60px;
         position: relative;
         overflow: hidden;
@@ -61,6 +62,21 @@
           top: 0;
           z-index: 2;
           opacity: 0;
+        }
+      }
+    }
+  }
+  > .StudentIdPopup {
+    > view {
+      > view {
+        padding: 0 60px;
+        > navigator {
+          text-align: center;
+          display: block;
+          line-height: 80px;
+          border-radius: 40px;
+          background: #f4c819 !important;
+          width: 100%;
         }
       }
     }
