@@ -1,64 +1,69 @@
 <template>
-  <view class="page flex-v">
+  <view class="page">
+    <MainPage @UserInfoChange="Init">
+      <view class="page flex-v">
 
-    <!-- 搜索 -->
-    <view class="Search">
-      <view class="flex-h">
-        <text class="iconfont iconsousuo"></text>
+        <!-- 搜索 -->
+        <view class="Search">
+          <view class="flex-h">
+            <text class="iconfont iconsousuo"></text>
+            <view class="flex-item">
+              <navigator url="/pages/Index/Search/index" hover-class="none">搜索你感兴趣的内容</navigator>
+            </view>
+          </view>
+        </view>
+
+        <!-- 内容 -->
         <view class="flex-item">
-          <navigator url="/pages/Index/Search/index" hover-class="none">搜索你感兴趣的内容</navigator>
+          <view class="flex-h">
+
+            <!-- 左侧菜单 -->
+            <view class="LeftMenu">
+              <scroll-view :scroll-y="true" :enhanced="true" :show-scrollbar="false" style="height: 100%;">
+                <view v-for="(item, index) in MenuList" :key="index" class="MenuItem" :class="{'active': item.typeId === CurrentMenuId}" @tap="CutMenu(item)">{{item.name}}</view>
+              </scroll-view>
+            </view>
+
+            <!-- 右侧内容 -->
+            <view class="RightContent flex-item">
+              <view>
+                <scroll-view :scroll-y="true" :enhanced="true" :show-scrollbar="false" style="height: 100%;" @scrolltolower="Infinite">
+                  <view class="BookList">
+                    <view v-for="(item, index) in PageList" :key="index">
+                      <BookItem :Data="item"></BookItem>
+                    </view>
+                  </view>
+                </scroll-view>
+              </view>
+            </view>
+
+          </view>
         </view>
       </view>
-    </view>
-
-    <!-- 内容 -->
-    <view class="flex-item">
-      <view class="flex-h">
-
-        <!-- 左侧菜单 -->
-        <view class="LeftMenu">
-          <scroll-view :scroll-y="true" :enhanced="true" :show-scrollbar="false" style="height: 100%;">
-            <view v-for="(item, index) in MenuList" :key="index" class="MenuItem" :class="{'active': item.id - 0 === CurrentMenuId - 0}" @tap="CutMenu(item)">{{item.name}}</view>
-          </scroll-view>
-        </view>
-
-        <!-- 右侧内容 -->
-        <view class="RightContent flex-item">
-
-        </view>
-
-      </view>
-    </view>
-
+    </MainPage>
   </view>
 </template>
 
 <script>
+import MainPage from '../../components/MainPage'
+import BookItem from '../../components/BookItem'
 import { createNamespacedHelpers } from 'vuex'
 const { mapState: mapUserState, mapActions: mapUserActions, mapMutations: mapUserMutations } = createNamespacedHelpers('user')
+const { mapActions: mapIndexActions } = createNamespacedHelpers('index')
 export default {
   name: 'Study',
   data () {
     return {
-      CurrentMenuId: 1,
-      MenuList: [
-        { name: '菜单1', id: 1 },
-        { name: '菜单2', id: 2 },
-        { name: '菜单3', id: 3 },
-        { name: '菜单4', id: 4 },
-        { name: '菜单5', id: 5 },
-        { name: '菜单6', id: 6 },
-        { name: '菜单7', id: 7 },
-        { name: '菜单8', id: 8 },
-        { name: '菜单9', id: 9 },
-        { name: '菜单10', id: 10 },
-        { name: '菜单11', id: 11 },
-        { name: '菜单12', id: 12 },
-        { name: '菜单13', id: 13 },
-        { name: '菜单14', id: 14 },
-        { name: '菜单15', id: 15 },
-        { name: '菜单16', id: 16 }
-      ]
+      IsInfinite: false,
+      DataLock: false,
+      CurrentMenuId: null,
+      MenuList: [],
+      PageData: {
+        pageNum: 1,
+        pageSize: 10
+      },
+      PageList: [],
+      HasNextPage: true
     }
   },
   computed: {
@@ -67,6 +72,8 @@ export default {
     })
   },
   components: {
+    MainPage,
+    BookItem
   },
   created () {
   },
@@ -75,14 +82,55 @@ export default {
     })
   },
   methods: {
+    ...mapIndexActions([
+      'GetSearchArticleList'
+    ]),
     ...mapUserActions([
+      'GetArticleTypeList'
     ]),
     ...mapUserMutations([
     ]),
     Init () {
+      if (this.UserInfo !== null) {
+        this.MenuList = []
+        this.GetArticleTypeList({ pageNum: 1, pageSize: 1000, status: 1 }).then((res) => {
+          this.MenuList = res.data.data.records || []
+          if (this.MenuList.length) {
+            this.CurrentMenuId = this.MenuList[0].typeId
+            this.ToGetPageList()
+          }
+        })
+      }
+    },
+    ToGetPageList () {
+      if (!this.DataLock && this.HasNextPage) {
+        this.DataLock = true
+        this.GetSearchArticleList({ queryData: { ...this.PageData, status: 1, typeId: this.CurrentMenuId } }).then((res) => {
+          this.HasNextPage = res.data.data.current - 0 < res.data.data.pages - 0
+          this.PageList = this.PageList.concat(res.data.data.records || [])
+          this.DataLock = false
+        }).then((res) => {
+          this.DataLock = false
+        })
+      }
     },
     CutMenu (item) {
-      this.CurrentMenuId = item.id
+      if (!this.DataLock) {
+        this.PageData.pageNum = 1
+        this.HasNextPage = true
+        this.PageList = []
+        this.CurrentMenuId = item.typeId
+        this.ToGetPageList()
+      }
+    },
+    Infinite () {
+      if (this.HasNextPage && !this.IsInfinite && !this.DataLock) {
+        this.IsInfinite = true
+        this.PageData.pageNum += 1
+        this.ToGetPageList()
+      } else {
+        this.IsInfinite = false
+      }
     }
   }
 }

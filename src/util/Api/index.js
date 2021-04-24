@@ -62,6 +62,10 @@ const Api = {
     method: 'get',
     url: `${prefix}/ma/medical-log`
   },
+  GetArticleTypeList: { // 获取文章分类
+    method: 'get',
+    url: `${prefix}/ma/post-type`
+  },
   // GetMyBodyCheckList: { // 获取我的体检记录
   //   method: 'get',
   //   url: `${prefix}/ma/medical-log`

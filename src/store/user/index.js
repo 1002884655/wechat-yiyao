@@ -68,6 +68,11 @@ export default {
       return new Promise((resolve, reject) => {
         ToolClass.ToolRequest({ url: Api.GetMyMedicalRecords.url, method: Api.GetMyMedicalRecords.method, ...payload, success (res) { resolve(res) }, error (res) { reject(res) } })
       })
+    },
+    GetArticleTypeList (context, payload) { // 获取文章分类
+      return new Promise((resolve, reject) => {
+        ToolClass.ToolRequest({ url: Api.GetArticleTypeList.url, method: Api.GetArticleTypeList.method, ...payload, success (res) { resolve(res) }, error (res) { reject(res) } })
+      })
     }
   }
 }
