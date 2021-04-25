@@ -133,7 +133,9 @@ export default {
           this.ArticleInfo = res.data.data || {}
         })
         if (this.UserInfo.studentId === null || this.UserInfo.studentId === '') {
-          this.$refs.MainPage.ShowStudentIdPopup = true
+          if (this.$refs.MainPage) {
+            this.$refs.MainPage.ShowStudentIdPopup = true
+          }
         }
       }
     },
