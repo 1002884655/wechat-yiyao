@@ -62,7 +62,7 @@
 
         <!-- 底部 -->
         <view class="flex-h Bottom">
-          <view class="Share">
+          <view class="Share" @tap="ShareArticle">
             <text class="iconfont iconfenxiang"></text>
             <text>分享</text>
           </view>
@@ -113,6 +113,13 @@ export default {
     MainPage,
     PageBottom
   },
+  onShareAppMessage () {
+    return {
+      title: this.ArticleInfo.shareSetting === null ? this.ArticleInfo.name : this.ArticleInfo.shareSetting.title,
+      imageUrl:this.ArticleInfo.shareSetting === null ? this.ArticleInfo.poster : this.ArticleInfo.shareSetting.imageUrl,
+      path: `/pages/Index/BookDetail/index?id=${Taro.getCurrentInstance().router.params.id}`
+    }
+  },
   created () {
   },
   mounted () {
@@ -138,6 +145,9 @@ export default {
           }
         }
       }
+    },
+    ShareArticle () { // 分享
+
     },
     TriggerSave () {
       if (!this.DataLock && this.ArticleInfo.postId) {

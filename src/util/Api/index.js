@@ -66,6 +66,10 @@ const Api = {
     method: 'get',
     url: `${prefix}/ma/post-type`
   },
+  PostArticleAnswer: { // 提交答题结果
+    method: 'post',
+    url: `${prefix}/ma/answer-test`
+  },
   // GetMyBodyCheckList: { // 获取我的体检记录
   //   method: 'get',
   //   url: `${prefix}/ma/medical-log`

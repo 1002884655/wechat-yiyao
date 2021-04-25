@@ -8,18 +8,22 @@
               <view class="Title">
                 <text>{{item.title}}</text>
               </view>
-              <!-- <label class="checkbox" v-if="item.answerType === 'checkbox'">
-                <checkbox value="cb" checked="false" />{{item.optionA}}
-              </label>
-              <label class="checkbox" v-if="item.answerType === 'checkbox'">
-                <checkbox value="cb" checked="false" />{{item.optionB}}
-              </label>
-              <label class="checkbox" v-if="item.answerType === 'checkbox'">
-                <checkbox value="cb" checked="false" />{{item.optionC}}
-              </label>
-              <label class="checkbox" v-if="item.answerType === 'checkbox'">
-                <checkbox value="cb" checked="false" />{{item.optionD}}
-              </label> -->
+
+              <checkbox-group @change="CheckboxChange(item, index, $event)" v-if="item.answerType === 'checkbox'" style="padding-top: 10px;">
+                <label class="checkbox">
+                  <checkbox value="A" :checked="false" />{{item.optionA}}
+                </label>
+                <label class="checkbox">
+                  <checkbox value="B" :checked="false" />{{item.optionB}}
+                </label>
+                <label class="checkbox">
+                  <checkbox value="C" :checked="false" />{{item.optionC}}
+                </label>
+                <label class="checkbox">
+                  <checkbox value="D" :checked="false" />{{item.optionD}}
+                </label>
+              </checkbox-group>
+
               <radio-group @change="RadioChange(item, index, $event)" v-if="item.answerType === 'radio'">
                 <label>
                   <view>
@@ -46,7 +50,26 @@
                   <view>{{item.optionD}}</view>
                 </label>
               </radio-group>
+
+              <radio-group @change="RadioChange(item, index, $event)" v-if="item.answerType === 'switch'">
+                <label>
+                  <view>
+                    <radio value="A" :checked="false" />
+                  </view>
+                  <view>{{item.optionA}}</view>
+                </label>
+                <label>
+                  <view>
+                    <radio value="B" :checked="false" />
+                  </view>
+                  <view>{{item.optionB}}</view>
+                </label>
+              </radio-group>
+
             </view>
+          </view>
+          <view class="Submit">
+            <text @tap="Submit">提交</text>
           </view>
         </scroll-view>
         <PageBottom></PageBottom>
@@ -61,6 +84,7 @@ import MainPage from '../../../components/MainPage'
 import PageBottom from '../../../components/PageBottom'
 import { createNamespacedHelpers } from 'vuex'
 const { mapState: mapUserState, mapActions: mapUserActions, mapMutations: mapUserMutations } = createNamespacedHelpers('user')
+const { mapActions: mapIndexActions } = createNamespacedHelpers('index')
 export default {
   name: 'BookDetail',
   data () {
@@ -90,8 +114,42 @@ export default {
     ]),
     ...mapUserMutations([
     ]),
-    RadioChange (item, index, e) {
-      console.log(item, index, e.detail.value)
+    ...mapIndexActions([
+      'PostArticleAnswer'
+    ]),
+    Submit () {
+      let Bool = true
+      this.ArticleInfo.postTestList.map((item) => {
+        if (item.correctAnswers === null || item.correctAnswers === '') {
+          Bool = false
+        }
+      })
+      if (Bool && !this.DataLock) {
+        this.DataLock = true
+        this.PostArticleAnswer({ data: { data: this.ArticleInfo.postTestList } }).then(() => {
+          wx.showToast({
+            title: '提交成功',
+            icon: 'none',
+            duration: 2000
+          })
+          this.DataLock = false
+          wx.navigateBack({ changed: true })
+        }).catch(() => {
+          this.DataLock = false
+        })
+      }
+    },
+    RadioChange (item, index, e) { // 单选
+      item.correctAnswers = e.detail.value
+    },
+    CheckboxChange (item, index, e) { // 多选
+      let Arr = []
+      if (item.correctAnswers !== null && item.correctAnswers !== '') {
+        Arr = item.correctAnswers.split(',')
+      }
+      Arr.push(e.detail.value)
+      Arr = [...new Set(Arr)]
+      item.correctAnswers = Arr[Arr.length - 1].join(',')
     },
     Init () {
       if (this.UserInfo !== null) {

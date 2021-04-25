@@ -28,6 +28,11 @@ export default {
       return new Promise((resolve, reject) => {
         ToolClass.ToolRequest({ url: Api.GetSearchArticleList.url, method: Api.GetSearchArticleList.method, ...payload, success (res) { resolve(res) }, error (res) { reject(res) } })
       })
+    },
+    PostArticleAnswer (context, payload) { // 提交答题结果
+      return new Promise((resolve, reject) => {
+        ToolClass.ToolRequest({ url: Api.PostArticleAnswer.url, method: Api.PostArticleAnswer.method, ...payload, success (res) { resolve(res) }, error (res) { reject(res) } })
+      })
     }
   }
 }

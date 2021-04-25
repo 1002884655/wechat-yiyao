@@ -3,186 +3,66 @@
   height: 100%;
   overflow: hidden;
   background: #f8f8f8;
-  > .flex-item {
+  .QuestionList {
     position: relative;
     overflow: hidden;
+    padding: 0 30px;
     > view {
-      width: 100%;
-      position: absolute;
-      left: 0;
-      top: 0;
-      bottom: 0;
-      overflow-y: scroll;
-      -webkit-overflow-scrolling: touch;
-      > .FrontInfo {
+      position: relative;
+      overflow: hidden;
+      border-bottom: 2px solid #eee;
+      padding: 30px 0;
+      > .Title {
         position: relative;
         overflow: hidden;
-        > .Img {
-          padding: 30px 120px;
+        > text {
+          font-size: 28px;
+          line-height: 40px;
+          display: block;
+        }
+      }
+      > checkbox-group {
+        font-size: 28px;
+        white-space: nowrap;
+        display: block;
+        position: relative;
+        overflow: hidden;
+        > view {
+          display: inline-block;
+          vertical-align: middle;
+        }
+      }
+      > radio-group {
+        position: relative;
+        overflow: hidden;
+        > label {
+          display: block;
+          position: relative;
+          overflow: hidden;
+          font-size: 28px;
+          white-space: nowrap;
+          margin-top: 20px;
           > view {
-            width: 100%;
-            padding-bottom: 120%;
-            position: relative;
-            overflow: hidden;
-            > image {
-              width: 100%;
-              height: 100%;
-            }
-          }
-        }
-        > .SubInfo {
-          position: relative;
-          overflow: hidden;
-          > .Tag {
-            font-size: 0;
-            white-space: nowrap;
-            padding: 0 30px;
-            > text {
-              display: inline-block;
-              vertical-align: middle;
-              font-size: 28px;
-              font-weight: bold;
-              line-height: 60px;
-              margin-right: 10px;
-              &.iconfont {
-                font-weight: normal;
-                font-size: 40px;
-              }
-            }
-          }
-          > .flex-h {
-            align-items: center;
-            padding: 0 30px;
-            > view {
-              align-items: center;
-              > text {
-                font-size: 28px;
-                line-height: 40px;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                color: #999;
-                &:first-child {
-                  margin-right: 10px;
-                }
-              }
-            }
-          }
-          > .Desc {
-            padding: 0 30px;
-            position: relative;
-            overflow: hidden;
-            > text {
-              width: 100%;
-              display: block;
-              font-size: 28px;
-              line-height: 40px;
-              color: #999;
-            }
-          }
-        }
-        > .Article {
-          position: relative;
-          overflow: hidden;
-          border-top: 2px solid #eee;
-          padding: 30px;
-          margin-top: 30px;
-        }
-        > .ToAnswer {
-          padding: 30px;
-          position: relative;
-          overflow: hidden;
-          > navigator {
-            display: block;
-            text-align: center;
+            display: inline-block;
+            vertical-align: middle;
             font-size: 28px;
-            background: #f4c819;
-            line-height: 80px;
-            border-radius: 40px;
-            color: #333;
           }
         }
       }
     }
   }
-  > .Bottom {
+  .Submit {
+    padding: 30px;
     position: relative;
     overflow: hidden;
-    background: #fff;
-    align-items: center;
-    padding-left: 30px;
-    z-index: 2;
-    box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.05);
-    > .Share,
-    .Like {
-      font-size: 0;
-      white-space: nowrap;
-      margin-right: 30px;
-      > text {
-        display: inline-block;
-        vertical-align: middle;
-        font-size: 28px;
-        color: #333;
-        line-height: 40px;
-        &:first-child {
-          font-size: 36px;
-          &.active {
-            color: #f4c819;
-          }
-        }
-      }
-    }
-    > .Answer {
-      position: relative;
-      overflow: hidden;
-      > navigator {
-        display: block;
-        width: 180px;
-        text-align: center;
-        line-height: 100px;
-        background: #f4c819;
-        color: #333;
-        font-size: 28px;
-      }
-    }
-    > .ReadInfo {
-      position: relative;
-      overflow: hidden;
-      > text {
-        display: block;
-        white-space: nowrap;
-        font-size: 26px;
-        color: #333;
-        line-height: 32px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        text-align: right;
-      }
-      > .Progress {
-        align-items: center;
-        margin-top: 10px;
-        > .flex-item {
-          height: 10px;
-          background: rgba(41, 141, 248, 0.5);
-          border-radius: 10px;
-          position: relative;
-          overflow: hidden;
-          margin-right: 20px;
-          > view {
-            width: 0;
-            height: 100%;
-            position: absolute;
-            left: 0;
-            top: 0;
-            background: rgba(41, 141, 248, 1);
-          }
-        }
-        > text {
-          font-size: 26px;
-          color: #333;
-          line-height: 32px;
-        }
-      }
+    > text {
+      display: block;
+      text-align: center;
+      font-size: 28px;
+      color: #333;
+      background: #f4c819;
+      line-height: 80px;
+      border-radius: 40px;
     }
   }
 }
