@@ -49,6 +49,11 @@
                 <rich-text :nodes="ArticleInfo.content"></rich-text>
               </view>
 
+              <!-- 去答题 -->
+              <view class="ToAnswer">
+                <navigator :url="`/pages/Index/BookAnswer/index?id=${ArticleInfo.postId}`" hover-class="none">去答题</navigator>
+              </view>
+
             </view>
 
             <PageBottom></PageBottom>
@@ -66,7 +71,10 @@
             <text>收藏</text>
           </view>
           <view class="flex-item"></view>
-          <view class="ReadInfo">
+          <view class="Answer">
+            <navigator :url="`/pages/Index/BookAnswer/index?id=${ArticleInfo.postId}`" hover-class="none">去答题</navigator>
+          </view>
+          <!-- <view class="ReadInfo">
             <text>阅读时长：1小时22分钟22秒</text>
             <view class="Progress flex-h">
               <view class="flex-item">
@@ -74,7 +82,7 @@
               </view>
               <text>完成进度</text>
             </view>
-          </view>
+          </view> -->
         </view>
       </view>
     </MainPage>

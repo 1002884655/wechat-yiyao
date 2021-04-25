@@ -4,6 +4,7 @@ export default {
     'pages/Index/index', // 首页
     'pages/Index/Search/index', // 搜索页
     'pages/Index/BookDetail/index', // 详情
+    'pages/Index/BookAnswer/index', // 答题
 
     'pages/Study/index', // 学习天地
 

@@ -14,7 +14,7 @@
         <text>类型：{{Data.tags && Data.tags.length ? Data.tags[0] : '-'}}</text>
       </view>
     </view>
-    <view class="ProgressContainer">
+    <!-- <view class="ProgressContainer">
       <view class="centerLabel">
         <view class="Progress">
           <view class="Sector"></view>
@@ -26,7 +26,7 @@
         <text class="Length">总时长</text>
         <text class="Length">1小时25分钟36秒</text>
       </view>
-    </view>
+    </view> -->
   </navigator>
 </template>
 

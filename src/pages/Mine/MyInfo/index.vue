@@ -21,7 +21,7 @@
           <view class="flex-h">
             <view>姓名</view>
             <view class="flex-item">
-              <text>{{UserInfo.name}}</text>
+              <input placeholder="请输入姓名" v-model="Form.name" />
               <!-- <input placeholder="请输入姓名" /> -->
             </view>
           </view>
@@ -89,6 +89,8 @@ export default {
       IsPull: false,
       DataLock: false,
       Form: {
+        name: null,
+        personId: null,
         sex: null,
         phone: null,
         email: null,
@@ -114,9 +116,10 @@ export default {
   },
   methods: {
     ...mapUserActions([
-      'UpdateUserInfo'
+      'PutUserInfo'
     ]),
     ...mapUserMutations([
+      'UpdateUserInfo'
     ]),
     Init () {
       if (this.UserInfo !== null) {
@@ -138,7 +141,14 @@ export default {
             Data[key] = this.Form[key]
           }
         }
-        this.UpdateUserInfo({ data: { data: { ...Data } } }).then(() => {
+        this.PutUserInfo({ data: { data: { ...Data } } }).then((res) => {
+          console.log(res.data.data)
+          this.UpdateUserInfo({ ...res.data.data })
+          wx.showToast({
+            title: '保存成功',
+            icon: 'none',
+            duration: 2000
+          })
           this.DataLock = false
         }).catch(() => {
           this.DataLock = false

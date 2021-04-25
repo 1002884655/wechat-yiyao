@@ -76,7 +76,7 @@ export default {
     ...mapUserActions([
       'WxGetPhoneAuth',
       'WxLogin',
-      'UpdateUserInfo'
+      'PutUserInfo'
     ]),
     ...mapUserMutations([
       'EditUserInfo'
@@ -122,7 +122,7 @@ export default {
     },
     GetUserIcon (e) {
       if (e.detail.userInfo.avatarUrl) {
-        this.UpdateUserInfo({ data: { data: { avatar: e.detail.userInfo.avatarUrl, personId: this.UserInfo.personId } } }).then(() => {
+        this.PutUserInfo({ data: { data: { avatar: e.detail.userInfo.avatarUrl, personId: this.UserInfo.personId } } }).then(() => {
           this.EditUserInfo({ name: 'avatar', value: e.detail.userInfo.avatarUrl })
           this.ShowUserIconAuthPopup = false
           if (!this.UserInfo.phone) {
@@ -141,7 +141,7 @@ export default {
       }
       this.WxGetPhoneAuth({ data: { data: { ...this.WxInfoData, sessionKey: this.UserInfo.sessionKey } } }).then((res) => {
         if (res.data.data.phone) {
-          this.UpdateUserInfo({ data: { data: { phone: res.data.data.phone, personId: this.UserInfo.personId } } }).then(() => {
+          this.PutUserInfo({ data: { data: { phone: res.data.data.phone, personId: this.UserInfo.personId } } }).then(() => {
             this.EditUserInfo({ name: 'phone', value: res.data.data.phone })
             this.ShowPhoneAuthPopup = false
             this.$emit('UserInfoChange')

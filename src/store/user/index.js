@@ -29,7 +29,7 @@ export default {
         ToolClass.ToolRequest({ url: Api.WxLogin.url, method: Api.WxLogin.method, ...payload, success (res) { context.commit('UpdateUserInfo', { ...res.data.data.person, sessionKey: res.data.data.sessionKey }); resolve(res) }, error (res) { reject(res) } })
       })
     },
-    UpdateUserInfo (context, payload) { // 更新用户信息
+    PutUserInfo (context, payload) { // 更新用户信息
       return new Promise((resolve, reject) => {
         ToolClass.ToolRequest({ url: Api.UpdateUserInfo.url, method: Api.UpdateUserInfo.method, ...payload, success (res) { context.commit('UpdateUserInfo', res.data.data.person); resolve(res) }, error (res) { reject(res) } })
       })
