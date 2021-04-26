@@ -6,10 +6,10 @@
         <text>授权手机号</text>
         <text>申请使用您的手机号</text>
         <view class="flex-h">
-          <text @tap="ShowPhoneAuthPopup = false; $emit('UserInfoChange')">拒绝</text>
+          <text @tap="ShowPhoneAuthPopup = false; toIndexPage()">拒绝</text>
           <view class="flex-item"></view>
-          <text>允许</text>
-          <button open-type="getPhoneNumber" @getphonenumber="GetUserPhone">获取授权</button>
+          <text>确定</text>
+          <button class="autu-btn" open-type="getPhoneNumber" @getphonenumber="GetUserPhone">获取授权</button>
         </view>
       </view>
     </view>
@@ -18,7 +18,7 @@
         <text>授权头像</text>
         <text>申请使用您的头像</text>
         <view class="flex-h">
-          <text @tap="ShowUserIconAuthPopup = false; $emit('UserInfoChange')">拒绝</text>
+          <text @tap="ShowUserIconAuthPopup = false; toIndexPage()">拒绝</text>
           <view class="flex-item"></view>
           <text>允许</text>
           <button open-type="getUserInfo" @getuserinfo="GetUserIcon">获取授权</button>
@@ -81,6 +81,11 @@ export default {
     ...mapUserMutations([
       'EditUserInfo'
     ]),
+    toIndexPage () {
+      Taro.reLaunch({
+        url: '/pages/index/index'
+      })
+    },
     Init () {
       const _that = this
       let CurrentPageRoute = Taro.getCurrentPages()[Taro.getCurrentPages().length - 1].route
@@ -136,7 +141,6 @@ export default {
       }
     },
     GetUserPhone (e) {
-      console.log('------------->', e)
       for (let key in this.WxInfoData) {
         this.WxInfoData[key] = e.detail[key]
       }
