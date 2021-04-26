@@ -6,7 +6,7 @@
           <view class="QuestionList" v-if="ArticleInfo.postTestList && ArticleInfo.postTestList !== null && ArticleInfo.postTestList.length">
             <view v-for="(item, index) in ArticleInfo.postTestList" :key="index">
               <view class="Title">
-                <text>{{item.title}}</text>
+                <text>{{index + 1}}、 {{item.title}}（{{item.answerType === 'checkbox' ? '多选题' : item.answerType === 'radio' ? '单选题' : '判断题'}}）</text>
               </view>
 
               <checkbox-group @change="CheckboxChange(item, index, $event)" v-if="item.answerType === 'checkbox'" style="padding-top: 10px;">

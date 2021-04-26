@@ -6,10 +6,10 @@
         <text>授权手机号</text>
         <text>申请使用您的手机号</text>
         <view class="flex-h">
-          <text @tap="ShowPhoneAuthPopup = false; $emit('UserInfoChange')">拒绝</text>
-          <view class="flex-item"></view>
-          <text>允许</text>
-          <button open-type="getUserInfo" @getuserinfo="GetUserPhone">获取授权</button>
+          <!-- <text @tap="ShowPhoneAuthPopup = false; $emit('UserInfoChange')">拒绝</text>
+          <view class="flex-item"></view> -->
+          <text class="flex-item">允许</text>
+          <button open-type="getPhoneNumber" @getuserinfo="GetUserPhone">获取授权</button>
         </view>
       </view>
     </view>
@@ -18,9 +18,9 @@
         <text>授权头像</text>
         <text>申请使用您的头像</text>
         <view class="flex-h">
-          <text @tap="ShowUserIconAuthPopup = false; $emit('UserInfoChange')">拒绝</text>
-          <view class="flex-item"></view>
-          <text>允许</text>
+          <!-- <text @tap="ShowUserIconAuthPopup = false; $emit('UserInfoChange')">拒绝</text>
+          <view class="flex-item"></view> -->
+          <text class="flex-item">允许</text>
           <button open-type="getUserInfo" @getuserinfo="GetUserIcon">获取授权</button>
         </view>
       </view>

@@ -113,11 +113,22 @@
     padding-left: 30px;
     z-index: 2;
     box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.05);
+    >.ShareBtn {
+      width: 92px;
+      opacity: 0;
+      display: block;
+      position: absolute;
+      z-index: 2;
+      left: 0;
+      top: 0;
+    }
     > .Share,
     .Like {
       font-size: 0;
       white-space: nowrap;
       margin-right: 30px;
+      position: relative;
+      z-index: 1;
       > text {
         display: inline-block;
         vertical-align: middle;

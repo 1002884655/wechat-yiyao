@@ -50,7 +50,7 @@
               </view>
 
               <!-- 去答题 -->
-              <view class="ToAnswer">
+              <view class="ToAnswer" v-show="ArticleInfo.name">
                 <navigator :url="`/pages/Index/BookAnswer/index?id=${ArticleInfo.postId}`" hover-class="none">去答题</navigator>
               </view>
 
@@ -61,7 +61,8 @@
         </view>
 
         <!-- 底部 -->
-        <view class="flex-h Bottom">
+        <view class="flex-h Bottom" v-show="ArticleInfo.name">
+          <button open-type="share" class="ShareBtn">分享</button>
           <view class="Share" @tap="ShareArticle">
             <text class="iconfont iconfenxiang"></text>
             <text>分享</text>
