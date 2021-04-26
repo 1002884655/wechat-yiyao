@@ -1,6 +1,6 @@
 <template>
   <view class="page">
-    <MainPage>
+    <MainPage @UserInfoChange="Init">
       <view class="page flex-v">
         <!-- 搜索 -->
         <view class="SearchContainer">

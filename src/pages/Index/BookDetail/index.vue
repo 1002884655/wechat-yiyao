@@ -117,7 +117,7 @@ export default {
   onShareAppMessage () {
     return {
       title: this.ArticleInfo.shareSetting === null ? this.ArticleInfo.name : this.ArticleInfo.shareSetting.title,
-      imageUrl:this.ArticleInfo.shareSetting === null ? this.ArticleInfo.poster : this.ArticleInfo.shareSetting.imageUrl,
+      imageUrl: this.ArticleInfo.shareSetting === null ? this.ArticleInfo.poster : this.ArticleInfo.shareSetting.imageUrl,
       path: `/pages/Index/BookDetail/index?id=${Taro.getCurrentInstance().router.params.id}`
     }
   },

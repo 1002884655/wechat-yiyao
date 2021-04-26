@@ -1,6 +1,6 @@
 <template>
   <view class="page">
-    <MainPage @UserInfoChange="Init">
+    <MainPage ref="MainPage" @UserInfoChange="Init">
       <view class="page flex-v">
 
         <!-- 搜索 -->
@@ -93,6 +93,7 @@ export default {
     Init () {
       if (this.UserInfo !== null) {
         this.MenuList = []
+        this.HasNextPage = true
         this.GetArticleTypeList({ pageNum: 1, pageSize: 1000, status: 1 }).then((res) => {
           this.MenuList = res.data.data.records || []
           if (this.MenuList.length) {
