@@ -76,10 +76,12 @@ export default {
     ...mapUserActions([
       'WxGetPhoneAuth',
       'WxLogin',
-      'PutUserInfo'
+      'PutUserInfo',
+      'WxAuthUserInfo',
     ]),
     ...mapUserMutations([
-      'EditUserInfo'
+      'EditUserInfo',
+      'UpdateUserInfo',
     ]),
     toIndexPage () {
       Taro.reLaunch({
@@ -126,9 +128,17 @@ export default {
       }
     },
     GetUserIcon (e) {
-      if (e.detail.userInfo.avatarUrl) {
-        this.PutUserInfo({ data: { data: { avatar: e.detail.userInfo.avatarUrl, personId: this.UserInfo.personId } } }).then(() => {
-          this.EditUserInfo({ name: 'avatar', value: e.detail.userInfo.avatarUrl })
+      if (e.detail.errMsg === 'getUserInfo:ok') {
+        const data = {
+          signature: e.detail.signature,
+          rawData: e.detail.rawData,
+          encryptedData: e.detail.encryptedData,
+          iv: e.detail.iv,
+          sessionKey: this.UserInfo.sessionKey,
+        }
+
+        this.WxAuthUserInfo({ data: { data }}).then(res => {
+          this.UpdateUserInfo(res.data.data)
           this.ShowUserIconAuthPopup = false
           if (!this.UserInfo.phone) {
             this.ShowPhoneAuthPopup = true

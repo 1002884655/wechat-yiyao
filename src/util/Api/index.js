@@ -7,7 +7,7 @@ const Api = {
     url: `${prefix}/ma/auth-phone`
   },
   WxGetUserIconAuth: { // 微信获取用户头像
-    method: 'post',
+    method: 'put',
     url: `${prefix}/ma/auth-user`
   },
   WxLogin: { // 微信登录

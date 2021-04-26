@@ -24,6 +24,11 @@ export default {
         ToolClass.ToolRequest({ url: Api.WxGetPhoneAuth.url, method: Api.WxGetPhoneAuth.method, ...payload, success (res) { resolve(res) }, error (res) { reject(res) } })
       })
     },
+    WxAuthUserInfo (context, payload) { // 授权头像，昵称
+      return new Promise((resolve, reject) => {
+        ToolClass.ToolRequest({ url: Api.WxGetUserIconAuth.url, method: Api.WxGetUserIconAuth.method, ...payload, success (res) { resolve(res) }, error (res) { reject(res) } })
+      })
+    },
     WxLogin (context, payload) { // 微信登录
       return new Promise((resolve, reject) => {
         ToolClass.ToolRequest({ url: Api.WxLogin.url, method: Api.WxLogin.method, ...payload, success (res) { context.commit('UpdateUserInfo', { ...res.data.data.person, sessionKey: res.data.data.sessionKey }); resolve(res) }, error (res) { reject(res) } })
