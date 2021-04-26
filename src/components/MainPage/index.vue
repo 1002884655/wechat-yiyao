@@ -141,6 +141,10 @@ export default {
       }
     },
     GetUserPhone (e) {
+      if (e.detail.errMsg !== 'getPhoneNumber:ok') {
+        return
+      }
+
       for (let key in this.WxInfoData) {
         this.WxInfoData[key] = e.detail[key]
       }
