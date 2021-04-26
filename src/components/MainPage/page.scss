@@ -52,18 +52,18 @@
             background: #ccc;
           }
         }
-        // > button {
-        //   display: block;
-        //   width: 200px;
-        //   position: absolute;
-        //   right: 60px;
-        //   line-height: 80px;
-        //   height: 80px;
-        //   max-height: 80px;
-        //   top: 0;
-        //   z-index: 2;
-        //   opacity: 0;
-        // }
+        > button {
+          display: block;
+          width: 200px;
+          position: absolute;
+          right: 60px;
+          line-height: 80px;
+          height: 80px;
+          max-height: 80px;
+          top: 0;
+          z-index: 2;
+          opacity: 0;
+        }
       }
     }
   }

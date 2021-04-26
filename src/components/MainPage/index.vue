@@ -8,7 +8,7 @@
         <view class="flex-h">
           <text @tap="ShowPhoneAuthPopup = false; toIndexPage()">拒绝</text>
           <view class="flex-item"></view>
-          <text>确定</text>
+          <text>允许</text>
           <button class="autu-btn" open-type="getPhoneNumber" @getphonenumber="GetUserPhone">获取授权</button>
         </view>
       </view>
@@ -83,7 +83,7 @@ export default {
     ]),
     toIndexPage () {
       Taro.reLaunch({
-        url: '/pages/index/index'
+        url: '/pages/Index/index'
       })
     },
     Init () {
