@@ -1,0 +1,72 @@
+.page {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #f8f8f8;
+  .Content {
+    position: relative;
+    overflow: hidden;
+    > view {
+      align-items: center;
+      background: #fff;
+      position: relative;
+      overflow: hidden;
+      border-top: 2px solid #f8f8f8;
+      padding: 0 30px;
+      &:first-child {
+        border-top: none;
+      }
+      > view {
+        &:first-child {
+          font-size: 28px;
+          line-height: 100px;
+          min-width: 120px;
+          > .Point {
+            color: #f4c819;
+            font-size: 28px;
+            line-height: 100px;
+          }
+        }
+        &.flex-item {
+          position: relative;
+          overflow: hidden;
+          text-align: right;
+          > input {
+            width: 100%;
+            display: block;
+            text-align: right;
+            font-size: 28px;
+          }
+          > text {
+            width: 100%;
+            display: block;
+            text-align: right;
+            font-size: 28px;
+          }
+          > .UserIcon {
+            width: 80px;
+            height: 80px;
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+            background: #eee;
+            border-radius: 100%;
+          }
+        }
+      }
+      &.Save {
+        background: none;
+        margin-top: 80px;
+        margin-bottom: 80px;
+        > view {
+          width: 100%;
+          text-align: center;
+          line-height: 80px;
+          color: #333;
+          border-radius: 6px;
+          background: #f4c819;
+        }
+      }
+    }
+  }
+}

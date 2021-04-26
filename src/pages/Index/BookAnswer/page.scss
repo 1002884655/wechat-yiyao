@@ -1,0 +1,68 @@
+.page {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #f8f8f8;
+  .QuestionList {
+    position: relative;
+    overflow: hidden;
+    padding: 0 30px;
+    > view {
+      position: relative;
+      overflow: hidden;
+      border-bottom: 2px solid #eee;
+      padding: 30px 0;
+      > .Title {
+        position: relative;
+        overflow: hidden;
+        > text {
+          font-size: 28px;
+          line-height: 40px;
+          display: block;
+        }
+      }
+      > checkbox-group {
+        font-size: 28px;
+        white-space: nowrap;
+        display: block;
+        position: relative;
+        overflow: hidden;
+        > view {
+          display: inline-block;
+          vertical-align: middle;
+        }
+      }
+      > radio-group {
+        position: relative;
+        overflow: hidden;
+        > label {
+          display: block;
+          position: relative;
+          overflow: hidden;
+          font-size: 28px;
+          white-space: nowrap;
+          margin-top: 20px;
+          > view {
+            display: inline-block;
+            vertical-align: middle;
+            font-size: 28px;
+          }
+        }
+      }
+    }
+  }
+  .Submit {
+    padding: 30px;
+    position: relative;
+    overflow: hidden;
+    > text {
+      display: block;
+      text-align: center;
+      font-size: 28px;
+      color: #333;
+      background: #f4c819;
+      line-height: 80px;
+      border-radius: 40px;
+    }
+  }
+}
