@@ -127,11 +127,15 @@ export default {
           this.ShowUserIconAuthPopup = false
           if (!this.UserInfo.phone) {
             this.ShowPhoneAuthPopup = true
+          } else {
+            this.$emit('UserInfoChange')
           }
         })
       } else {
         if (!this.UserInfo.phone) {
           this.ShowPhoneAuthPopup = true
+        } else {
+          this.$emit('UserInfoChange')
         }
       }
     },
