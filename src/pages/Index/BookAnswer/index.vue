@@ -133,7 +133,9 @@ export default {
             duration: 2000
           })
           this.DataLock = false
-          wx.navigateBack({ changed: true })
+          setTimeout(() => {
+            wx.navigateBack({ changed: true })
+          }, 2000)
         }).catch(() => {
           this.DataLock = false
         })
