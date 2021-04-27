@@ -98,20 +98,24 @@ export default {
           this.MenuList = res.data.data.records || []
           if (this.MenuList.length) {
             this.CurrentMenuId = this.MenuList[0].typeId
-            this.ToGetPageList()
+            this.ToGetPageList(() => {
+              this.$refs.MainPage.ShowPage()
+            })
           }
         })
       }
     },
-    ToGetPageList () {
+    ToGetPageList (callback = () => {}) {
       if (!this.DataLock && this.HasNextPage) {
         this.DataLock = true
         this.GetSearchArticleList({ queryData: { ...this.PageData, status: 1, typeId: this.CurrentMenuId } }).then((res) => {
           this.HasNextPage = res.data.data.current - 0 < res.data.data.pages - 0
           this.PageList = this.PageList.concat(res.data.data.records || [])
           this.DataLock = false
+          callback()
         }).then((res) => {
           this.DataLock = false
+          callback()
         })
       }
     },

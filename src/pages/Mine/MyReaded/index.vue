@@ -1,6 +1,6 @@
 <template>
   <view class="page">
-    <MainPage @UserInfoChange="Init">
+    <MainPage ref="MainPage" @UserInfoChange="Init">
       <scroll-view scroll-y="true" style="height: 100%;" :refresher-enabled="true" @refresherrefresh="OnRefresh" @scrolltolower="Infinite" :refresher-triggered="IsPull" refresher-background="none" refresher-default-style="black">
         <view class="Content">
           <view class="ListItem" v-for="(item, index) in PageList" :key="index">
@@ -61,10 +61,12 @@ export default {
         this.PageList = []
         this.PageData.pageNum = 1
         this.HasNextPage = true
-        this.ToGetPageList()
+        this.ToGetPageList(() => {
+          this.$refs.MainPage.ShowPage()
+        })
       }
     },
-    ToGetPageList () {
+    ToGetPageList (callback = () => {}) {
       if (!this.DataLock && this.HasNextPage) {
         this.DataLock = true
         this.GetMyReadRecords({ queryData: { ...this.PageData } }).then((res) => {
@@ -73,10 +75,12 @@ export default {
           this.DataLock = false
           this.IsPull = false
           this.IsInfinite = false
+          callback()
         }).catch(() => {
           this.DataLock = false
           this.IsPull = false
           this.IsInfinite = false
+          callback()
         })
       }
     },

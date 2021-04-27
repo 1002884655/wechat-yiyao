@@ -1,6 +1,6 @@
 <template>
   <view class="page">
-    <MainPage @UserInfoChange="UserInfoChange">
+    <MainPage ref="MainPage" @UserInfoChange="UserInfoChange">
       <view class="page flex-v">
 
         <!-- 搜索 -->
@@ -108,6 +108,8 @@ export default {
     this.$nextTick(() => {
     })
   },
+  complete () {
+  },
   methods: {
     ...mapUserActions([
     ]),
@@ -121,12 +123,13 @@ export default {
     UserInfoChange () {
       this.GetIndexBanner().then((res) => {
         this.BannerList = [...res.data.data]
-      })
-      this.GetIndexHotList().then((res) => {
-        this.HotList = [...res.data.data]
-      })
-      this.GetIndexNewestArticle({ urlData: { pageSize: 10, pageNum: 1 } }).then((res) => {
-        this.NewestArticleList = [...res.data.data.records]
+        this.GetIndexHotList().then((res) => {
+          this.HotList = [...res.data.data]
+        })
+        this.GetIndexNewestArticle({ urlData: { pageSize: 10, pageNum: 1 } }).then((res) => {
+          this.NewestArticleList = [...res.data.data.records]
+          this.$refs.MainPage.ShowPage()
+        })
       })
     },
     Init () {

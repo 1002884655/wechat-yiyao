@@ -139,6 +139,7 @@ export default {
       if (this.UserInfo !== null) {
         this.GetArticleDetail({ urlData: { id: Taro.getCurrentInstance().router.params.id } }).then((res) => {
           this.ArticleInfo = res.data.data || {}
+          this.$refs.MainPage.ShowPage()
         })
         if (this.UserInfo.studentId === null || this.UserInfo.studentId === '') {
           if (this.$refs.MainPage) {

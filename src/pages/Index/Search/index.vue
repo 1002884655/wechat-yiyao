@@ -1,6 +1,6 @@
 <template>
   <view class="page">
-    <MainPage @UserInfoChange="Init">
+    <MainPage ref="MainPage" @UserInfoChange="Init">
       <view class="page flex-v">
         <!-- 搜索 -->
         <view class="SearchContainer">
@@ -96,6 +96,7 @@ export default {
       'GetSearchArticleList'
     ]),
     Init () {
+      this.$refs.MainPage.ShowPage()
     },
     Search () {
       this.GetSearchArticleList({ queryData: { pageNum: 1, pageSize: 10000, name: this.SearchKey } }).then((res) => {

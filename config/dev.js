@@ -3,7 +3,7 @@ module.exports = {
     NODE_ENV: '"development"'
   },
   defineConstants: {
-    SERVER_API: '"http://medical.p.njyunzhi.com"'
+    SERVER_API: '"https://api.medical.p.njyunzhi.com"'
   },
   mini: {},
   h5: {}

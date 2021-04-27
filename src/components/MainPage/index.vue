@@ -1,6 +1,7 @@
 <template>
   <view class="MainPage">
     <slot></slot>
+    <view class="PageLoading" v-show="ShowLoading"></view>
     <view class="PhoneAuthPopup" v-show="ShowPhoneAuthPopup">
       <view class="centerLabel">
         <text>授权手机号</text>
@@ -51,6 +52,7 @@ export default {
   },
   data () {
     return {
+      ShowLoading: true,
       ShowPhoneAuthPopup: false,
       ShowUserIconAuthPopup: false,
       ShowStudentIdPopup: false,
@@ -82,6 +84,7 @@ export default {
       'EditUserInfo'
     ]),
     Init () {
+      wx.showLoading({ title: '加载中', icon: 'loading' })
       const _that = this
       let CurrentPageRoute = Taro.getCurrentPages()[Taro.getCurrentPages().length - 1].route
       if (this.UserInfo === null) {
@@ -119,6 +122,10 @@ export default {
           _that.$emit('UserInfoChange')
         }
       }
+    },
+    ShowPage () {
+      this.ShowLoading = false
+      wx.hideLoading()
     },
     GetUserIcon (e) {
       if (e.detail.userInfo.avatarUrl) {

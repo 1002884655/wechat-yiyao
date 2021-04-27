@@ -1,6 +1,6 @@
 <template>
   <view class="page">
-    <MainPage @UserInfoChange="Init">
+    <MainPage ref="MainPage" @UserInfoChange="Init">
       <scroll-view scroll-y="true" style="height: 100%;" :refresher-enabled="true" @refresherrefresh="OnRefresh" :refresher-triggered="IsPull" refresher-background="#f4c819" refresher-default-style="white">
         <view class="Content">
 
@@ -103,10 +103,10 @@ export default {
     ...mapUserMutations([
     ]),
     Init () {
-      console.log(111)
       if (this.UserInfo !== null) {
-        console.log(222)
-        this.GetCurrentPersonInfo()
+        this.GetCurrentPersonInfo().then(() => {
+          this.$refs.MainPage.ShowPage()
+        })
       }
     },
     OnRefresh (e) {

@@ -1,6 +1,6 @@
 <template>
   <view class="page">
-    <MainPage @UserInfoChange="Init">
+    <MainPage ref="MainPage" @UserInfoChange="Init">
       <scroll-view scroll-y="true" style="height: 100%;" :refresher-enabled="true" @refresherrefresh="OnRefresh" :refresher-triggered="IsPull" refresher-background="none" refresher-default-style="black">
         <view class="Content" v-if="UserInfo !== null">
           <view class="flex-h">
@@ -126,6 +126,7 @@ export default {
         for (let key in this.Form) {
           this.Form[key] = this.UserInfo[key]
         }
+        this.$refs.MainPage.ShowPage()
       }
     },
     SexChange (e) {
