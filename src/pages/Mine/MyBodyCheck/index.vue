@@ -35,7 +35,7 @@
             <scroll-view scroll-y="true" style="height: 100%;" :refresher-enabled="true" @refresherrefresh="OnRefresh" :refresher-triggered="IsPull" refresher-background="none" refresher-default-style="black">
               <view class="Content">
                 <view class="ListItem" v-for="(item, index) in PageList" :key="index">
-                  <BodyCheckItem></BodyCheckItem>
+                  <BodyCheckItem :Data="item"></BodyCheckItem>
                 </view>
               </view>
               <PageBottom></PageBottom>
@@ -57,8 +57,15 @@ export default {
   name: 'MyBodyCheck',
   data () {
     return {
+      IsInfinite: false,
       IsPull: false,
-      PageList: ['', '', '', '', '', '', '', '', '', '', '', '']
+      PageList: [],
+      PageData: {
+        pageSize: 10,
+        pageNum: 1
+      },
+      HasNextPage: true,
+      DataLock: false
     }
   },
   computed: {
@@ -79,17 +86,50 @@ export default {
   },
   methods: {
     ...mapUserActions([
+      'GetMyBodyCheckList'
     ]),
     ...mapUserMutations([
     ]),
     Init () {
-      this.$refs.MainPage.ShowPage()
+      if (this.UserInfo !== null && !this.DataLock) {
+        this.PageList = []
+        this.PageData.pageNum = 1
+        this.HasNextPage = true
+        this.ToGetPageList(() => {
+          this.$refs.MainPage.ShowPage()
+        })
+      }
     },
-    OnRefresh (e) {
+    ToGetPageList (callback = () => { }) {
+      if (!this.DataLock && this.HasNextPage) {
+        this.DataLock = true
+        this.GetMyBodyCheckList({ queryData: { ...this.PageData } }).then((res) => {
+          this.PageList = this.PageList.concat(res.data.data.records || [])
+          this.HasNextPage = res.data.data.current - 0 < res.data.data.pages - 0
+          this.DataLock = false
+          this.IsPull = false
+          this.IsInfinite = false
+          callback()
+        }).catch(() => {
+          this.DataLock = false
+          this.IsPull = false
+          this.IsInfinite = false
+          callback()
+        })
+      }
+    },
+    OnRefresh () {
       this.IsPull = true
-      window.setTimeout(() => {
-        this.IsPull = false
-      }, 1000)
+      this.Init()
+    },
+    Infinite () {
+      if (this.HasNextPage && !this.IsInfinite && !this.DataLock) {
+        this.IsInfinite = true
+        this.PageData.pageNum += 1
+        this.ToGetPageList()
+      } else {
+        this.IsInfinite = false
+      }
     }
   }
 }

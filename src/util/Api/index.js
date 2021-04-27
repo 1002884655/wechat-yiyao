@@ -70,10 +70,10 @@ const Api = {
     method: 'post',
     url: `${prefix}/ma/answer-test`
   },
-  // GetMyBodyCheckList: { // 获取我的体检记录
-  //   method: 'get',
-  //   url: `${prefix}/ma/medical-log`
-  // }
+  GetMyBodyCheckList: { // 获取我的体检记录
+    method: 'get',
+    url: `${prefix}/ma/test-log`
+  }
 }
 
 export default Api

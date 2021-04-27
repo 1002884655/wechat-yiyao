@@ -73,6 +73,11 @@ export default {
       return new Promise((resolve, reject) => {
         ToolClass.ToolRequest({ url: Api.GetArticleTypeList.url, method: Api.GetArticleTypeList.method, ...payload, success (res) { resolve(res) }, error (res) { reject(res) } })
       })
+    },
+    GetMyBodyCheckList (context, payload) { // 获取我的体检记录
+      return new Promise((resolve, reject) => {
+        ToolClass.ToolRequest({ url: Api.GetMyBodyCheckList.url, method: Api.GetMyBodyCheckList.method, ...payload, success (res) { resolve(res) }, error (res) { reject(res) } })
+      })
     }
   }
 }
