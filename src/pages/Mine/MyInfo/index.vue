@@ -49,7 +49,17 @@
           <view class="flex-h">
             <view><text class="Point">*</text>学校</view>
             <view class="flex-item">
-              <input placeholder="请输入学校" v-model="Form.schoolName" />
+              <Picker v-model="Form.schoolId" :range="schoolList" @change="handleSchoolChange" label-key="name" value-key="schoolId">
+                <text>{{ Form.schoolName || '请选择学校' }}</text>
+              </Picker>
+            </view>
+          </view>
+          <view class="flex-h">
+            <view><text class="Point">*</text>专业</view>
+            <view class="flex-item">
+              <Picker v-model="Form.specialtyId" :range="specialtyList" @change="handleSpecialtyChange" label-key="name" value-key="specialtyId">
+                <text>{{ Form.specialtyName || '请选择专业' }}</text>
+              </Picker>
             </view>
           </view>
           <view class="flex-h">
@@ -74,9 +84,14 @@
 </template>
 
 <script>
-import MainPage from '../../../components/MainPage'
+import MainPage from '@/components/MainPage'
+import Picker from '@/components/Picker'
 import { createNamespacedHelpers } from 'vuex'
+import ToolClass from '@/util/PublicMethod'
+import Api from '@/util/Api'
+
 const { mapState: mapUserState, mapActions: mapUserActions, mapMutations: mapUserMutations } = createNamespacedHelpers('user')
+
 export default {
   name: 'MyInfo',
   data () {
@@ -94,10 +109,15 @@ export default {
         sex: null,
         phone: null,
         email: null,
+        schoolId: null,
         schoolName: null,
         schoolBatch: null,
+        specialtyId: null,
+        specialtyName: null,
         studentId: null
-      }
+      },
+      schoolList: [],
+      specialtyList: [],
     }
   },
   computed: {
@@ -106,9 +126,11 @@ export default {
     })
   },
   components: {
-    MainPage
+    MainPage,
+    Picker,
   },
   created () {
+    this.getSchoolList()
   },
   mounted () {
     this.$nextTick(() => {
@@ -150,6 +172,7 @@ export default {
             duration: 2000
           })
           this.DataLock = false
+          Taro.navigateBack({ delta: 1 })
         }).catch(() => {
           this.DataLock = false
         })
@@ -160,6 +183,32 @@ export default {
       window.setTimeout(() => {
         this.IsPull = false
       }, 1000)
+    },
+    getSchoolList () {
+      ToolClass.ToolRequest({
+        ...Api.GetSchoolList,
+        success: (res) => {
+          this.schoolList = res.data.data
+        }
+      })
+    },
+    getSpecialtyList (schoolId) {
+      ToolClass.ToolRequest({
+        ...Api.GetSpecialtyList,
+        queryData: { schoolId },
+        success: (res) => {
+          this.specialtyList = res.data.data
+        }
+      })
+    },
+    handleSchoolChange (school) {
+      this.Form.schoolName = school.name
+      this.Form.specialtyId = null
+      this.Form.specialtyName = null
+      this.getSpecialtyList(school.schoolId)
+    },
+    handleSpecialtyChange (specialty) {
+      this.Form.specialtyName = specialty.name
     }
   }
 }

@@ -73,7 +73,13 @@ const Api = {
   // GetMyBodyCheckList: { // 获取我的体检记录
   //   method: 'get',
   //   url: `${prefix}/ma/medical-log`
-  // }
+  // },
+  GetSchoolList: {
+    url: `${prefix}/ma/school`
+  },
+  GetSpecialtyList: {
+    url: `${prefix}/ma/specialty`
+  },
 }
 
 export default Api

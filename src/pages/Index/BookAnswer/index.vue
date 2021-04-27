@@ -4,22 +4,22 @@
       <view class="page">
         <scroll-view :scroll-y="true" :enhanced="true" :show-scrollbar="false" style="height: 100%;">
           <view class="QuestionList" v-if="ArticleInfo.postTestList && ArticleInfo.postTestList !== null && ArticleInfo.postTestList.length">
-            <view v-for="(item, index) in ArticleInfo.postTestList" :key="index">
+            <view class="QuestionItem" v-for="(item, index) in ArticleInfo.postTestList" :key="index">
               <view class="Title">
-                <text>{{item.title}}</text>
+                <text>{{getQuestionTitle(item, index)}}</text>
               </view>
 
               <checkbox-group @change="CheckboxChange(item, index, $event)" v-if="item.answerType === 'checkbox'" style="padding-top: 10px;">
-                <label class="checkbox">
+                <label>
                   <checkbox value="A" :checked="false" />{{item.optionA}}
                 </label>
-                <label class="checkbox">
+                <label>
                   <checkbox value="B" :checked="false" />{{item.optionB}}
                 </label>
-                <label class="checkbox">
+                <label>
                   <checkbox value="C" :checked="false" />{{item.optionC}}
                 </label>
-                <label class="checkbox">
+                <label>
                   <checkbox value="D" :checked="false" />{{item.optionD}}
                 </label>
               </checkbox-group>
@@ -102,12 +102,6 @@ export default {
     MainPage,
     PageBottom
   },
-  created () {
-  },
-  mounted () {
-    this.$nextTick(() => {
-    })
-  },
   methods: {
     ...mapUserActions([
       'GetArticleDetail'
@@ -162,6 +156,18 @@ export default {
           }
         }
       }
+    },
+    getQuestionTitle (item, index) {
+      let qType = '判断';
+      if (item.answerType === 'radio') {
+        qType = '单选';
+      } else if (item.answerType === 'checkbox') {
+        qType = '多选';
+      }
+
+      const qIndex = index + 1
+
+      return `${qIndex}、[${qType}] ${item.title}`
     }
   }
 }
