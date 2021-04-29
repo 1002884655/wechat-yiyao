@@ -21,7 +21,7 @@
           <text @tap="ShowUserIconAuthPopup = false; toIndexPage()">拒绝</text>
           <view class="flex-item"></view>
           <text>允许</text>
-          <button open-type="getUserInfo" @getuserinfo="GetUserIcon">获取授权</button>
+          <button @tap="GetUserIcon">获取授权</button>
         </view>
       </view>
     </view>
@@ -129,27 +129,34 @@ export default {
       }
     },
     GetUserIcon (e) {
-      if (e.detail.errMsg === 'getUserInfo:ok') {
-        const data = {
-          signature: e.detail.signature,
-          rawData: e.detail.rawData,
-          encryptedData: e.detail.encryptedData,
-          iv: e.detail.iv,
-          sessionKey: this.UserInfo.sessionKey,
-        }
+      console.log('-----e------->', e)
 
-        this.WxAuthUserInfo({ data: { data }}).then(res => {
-          this.UpdateUserInfo(res.data.data)
-          this.ShowUserIconAuthPopup = false
-          if (!this.UserInfo.phone) {
-            this.ShowPhoneAuthPopup = true
+      wx.getUserProfile({
+        desc: '用于获取个人昵称与头像等',
+        success: (res) => {
+          if (res.errMsg === 'getUserProfile:ok') {
+            const data = {
+              signature: res.signature,
+              rawData: res.rawData,
+              encryptedData: res.encryptedData,
+              iv: res.iv,
+              sessionKey: this.UserInfo.sessionKey,
+            }
+
+            this.WxAuthUserInfo({ data: { data }}).then(res => {
+              this.UpdateUserInfo(res.data.data)
+              this.ShowUserIconAuthPopup = false
+              if (!this.UserInfo.phone) {
+                this.ShowPhoneAuthPopup = true
+              }
+            })
+          } else {
+            if (!this.UserInfo.phone) {
+              this.ShowPhoneAuthPopup = true
+            }
           }
-        })
-      } else {
-        if (!this.UserInfo.phone) {
-          this.ShowPhoneAuthPopup = true
         }
-      }
+      })
     },
     GetUserPhone (e) {
       if (e.detail.errMsg !== 'getPhoneNumber:ok') {
