@@ -71,7 +71,7 @@
           <view class="flex-h">
             <view><text class="Point">*</text>学号</view>
             <view class="flex-item">
-              <input placeholder="请输入学号" v-model="Form.studentId" />
+              <input placeholder="请输入学号" v-model="Form.studentNo" />
             </view>
           </view>
           <view class="Save">
@@ -104,6 +104,7 @@ export default {
       IsPull: false,
       DataLock: false,
       Form: {
+        studentId: null,
         name: null,
         personId: null,
         sex: null,
@@ -114,7 +115,7 @@ export default {
         schoolBatch: null,
         specialtyId: null,
         specialtyName: null,
-        studentId: null
+        studentNo: null
       },
       schoolList: [],
       specialtyList: [],
