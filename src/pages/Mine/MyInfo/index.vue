@@ -172,7 +172,7 @@ export default {
         }
         this.PutUserInfo({ data: { data: { ...Data } } }).then((res) => {
           console.log(res.data.data)
-          // this.UpdateUserInfo({ ...res.data.data })
+          this.UpdateStudentInfo({ ...res.data.data })
           wx.showToast({
             title: '保存成功',
             icon: 'none',
