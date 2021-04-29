@@ -51,6 +51,7 @@
               <!-- 正文 -->
               <view class="Article">
                 <rich-text :nodes="ArticleInfo.content"></rich-text>
+                <video width="100%" v-if="ArticleInfo.videoUrl" :src="ArticleInfo.videoUrl" enable-danmu danmu-btn :show-center-play-btn="false" :show-play-btn="true" controls :picture-in-picture-mode="['push', 'pop']"></video>
               </view>
 
               <!-- 去答题 -->
