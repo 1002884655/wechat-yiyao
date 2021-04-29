@@ -16,7 +16,7 @@ const Api = {
   },
   UpdateUserInfo: { // 更新用户信息
     method: 'put',
-    url: `${prefix}/ma/person`
+    url: `${prefix}/ma/student`
   },
   GetIndexBanner: { // 获取首页banner
     method: 'get',

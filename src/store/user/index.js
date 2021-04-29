@@ -16,6 +16,9 @@ export default {
     },
     UpdateUserInfo (state, data) {
       state.UserInfo = { ...state.UserInfo, ...data }
+    },
+    UpdateStudentInfo (state, data) {
+      state.UserInfo = { ...state.UserInfo, student: data }
     }
   },
   actions: {
@@ -36,7 +39,7 @@ export default {
     },
     PutUserInfo (context, payload) { // 更新用户信息
       return new Promise((resolve, reject) => {
-        ToolClass.ToolRequest({ url: Api.UpdateUserInfo.url, method: Api.UpdateUserInfo.method, ...payload, success (res) { context.commit('UpdateUserInfo', res.data.data.person); resolve(res) }, error (res) { reject(res) } })
+        ToolClass.ToolRequest({ url: Api.UpdateUserInfo.url, method: Api.UpdateUserInfo.method, ...payload, success (res) { context.commit('UpdateStudentInfo', res.data.data.person); resolve(res) }, error (res) { reject(res) } })
       })
     },
     GetCurrentPersonInfo (context, payload) { // 获取当前人员信息

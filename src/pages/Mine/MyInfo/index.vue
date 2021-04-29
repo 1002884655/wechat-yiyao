@@ -122,7 +122,8 @@ export default {
   },
   computed: {
     ...mapUserState({
-      UserInfo: x => x.UserInfo // 用户信息
+      UserInfo: x => x.UserInfo, // 用户信息
+      Student: x => x.UserInfo.student || {}, // 学生信息
     })
   },
   components: {
@@ -141,12 +142,18 @@ export default {
       'PutUserInfo'
     ]),
     ...mapUserMutations([
-      'UpdateUserInfo'
+      'UpdateUserInfo',
+      'UpdateStudentInfo',
     ]),
     Init () {
       if (this.UserInfo !== null) {
         for (let key in this.Form) {
           this.Form[key] = this.UserInfo[key]
+        }
+      }
+      if (this.Student !== null) {
+        for (let key in this.Form) {
+          this.Form[key] = this.Student[key]
         }
       }
     },
@@ -165,7 +172,7 @@ export default {
         }
         this.PutUserInfo({ data: { data: { ...Data } } }).then((res) => {
           console.log(res.data.data)
-          this.UpdateUserInfo({ ...res.data.data })
+          // this.UpdateUserInfo({ ...res.data.data })
           wx.showToast({
             title: '保存成功',
             icon: 'none',
