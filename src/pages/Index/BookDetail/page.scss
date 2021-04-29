@@ -17,8 +17,32 @@
       > .FrontInfo {
         position: relative;
         overflow: hidden;
+        > .Like {
+          display: inline-block;
+          position: absolute;
+          z-index: 2;
+          right: 30px;
+          top: 30px;
+          font-size: 0;
+          white-space: nowrap;
+          > text {
+            display: inline-block;
+            vertical-align: middle;
+            font-size: 28px;
+            color: #333;
+            &:first-child {
+              font-size: 48px;
+              color: #ccc;
+              &.active {
+                color: #f4c819;
+              }
+            }
+          }
+        }
         > .Img {
           padding: 30px 120px;
+          position: relative;
+          z-index: 1;
           > view {
             width: 100%;
             padding-bottom: 125%;
@@ -48,11 +72,20 @@
                 font-weight: normal;
                 font-size: 40px;
               }
+              &.active {
+                font-size: 24px;
+                line-height: 50px;
+                font-weight: normal;
+                background: #f4c819;
+                padding: 0 20px;
+                border-radius: 6px;
+              }
             }
           }
           > .flex-h {
             align-items: center;
             padding: 0 30px;
+            margin-top: 30px;
             > view {
               align-items: center;
               > text {
@@ -61,9 +94,12 @@
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
-                color: #999;
+                color: #333;
+                font-weight: bold;
                 &:first-child {
                   margin-right: 10px;
+                  color: #999;
+                  font-weight: normal;
                 }
               }
             }
@@ -72,12 +108,14 @@
             padding: 0 30px;
             position: relative;
             overflow: hidden;
+            margin-top: 30px;
+            font-size: 28px;
+            line-height: 60px;
+            color: #999;
             > text {
-              width: 100%;
-              display: block;
               font-size: 28px;
-              line-height: 40px;
-              color: #999;
+              line-height: 60px;
+              color: #333;
             }
           }
         }

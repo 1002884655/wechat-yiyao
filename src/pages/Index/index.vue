@@ -24,7 +24,7 @@
                   <view>
                     <swiper :indicator-dots="true" :autoplay="true" :interval="3000">
                       <swiper-item v-for="(item, index) in BannerList" :key="index">
-                        <view class="BannerItem">
+                        <view class="BannerItem" @tap="BannerClick(item)">
                           <image mode="aspectFill" :src="item.image" class="centerLabel"></image>
                         </view>
                       </swiper-item>
@@ -118,6 +118,11 @@ export default {
       'GetIndexHotList',
       'GetIndexNewestArticle'
     ]),
+    BannerClick (item) {
+      if (item.targetType === 'post') {
+        wx.navigateTo({ url: `/pages/Index/BookDetail/index?id=${item.targetId}` })
+      }
+    },
     UserInfoChange () {
       this.GetIndexBanner().then((res) => {
         this.BannerList = [...res.data.data]

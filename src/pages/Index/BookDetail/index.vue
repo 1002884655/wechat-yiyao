@@ -8,6 +8,10 @@
 
             <!-- 封面内容 -->
             <view class="FrontInfo">
+              <view class="Like" @tap="TriggerSave">
+                <text class="iconfont iconshoucang1" :class="{'active': ArticleInfo.isSaved}"></text>
+                <!-- <text>收藏</text> -->
+              </view>
               <view class="Img">
                 <view>
                   <image mode="aspectFit" :src="ArticleInfo.poster" class="centerLabel"></image>
@@ -17,14 +21,14 @@
                 <view class="Tag">
                   <text class="iconfont iconbiaoqian"></text>
                   <text>分类：</text>
-                  <text v-for="(item, index) in (ArticleInfo.tags || [])" :key="index">{{item}}</text>
+                  <text class="active">{{ArticleInfo.typeName}}</text>
                 </view>
                 <view class="flex-h">
-                  <view class="flex-item flex-h">
+                  <view class="flex-item flex-h" style="flex: 3; -webkit-flex: 3;">
                     <text>名称：</text>
                     <text class="flex-item">{{ArticleInfo.name}}</text>
                   </view>
-                  <view class="flex-item flex-h">
+                  <view class="flex-item flex-h" style="flex: 1; -webkit-flex: 1;">
                     <text>阅读量：</text>
                     <text class="flex-item">{{ArticleInfo.answerNum}}</text>
                   </view>
@@ -40,7 +44,7 @@
                   </view>
                 </view>
                 <view class="Desc">
-                  <text>简介：{{ArticleInfo.summary}}</text>
+                  简介：<text>{{ArticleInfo.summary}}</text>
                 </view>
               </view>
 
@@ -61,7 +65,7 @@
         </view>
 
         <!-- 底部 -->
-        <view class="flex-h Bottom">
+        <!-- <view class="flex-h Bottom">
           <view class="Share" @tap="ShareArticle">
             <text class="iconfont iconfenxiang"></text>
             <text>分享</text>
@@ -74,16 +78,7 @@
           <view class="Answer">
             <navigator :url="`/pages/Index/BookAnswer/index?id=${ArticleInfo.postId}`" hover-class="none">去答题</navigator>
           </view>
-          <!-- <view class="ReadInfo">
-            <text>阅读时长：1小时22分钟22秒</text>
-            <view class="Progress flex-h">
-              <view class="flex-item">
-                <view :style="{width: '50%'}"></view>
-              </view>
-              <text>完成进度</text>
-            </view>
-          </view> -->
-        </view>
+        </view> -->
       </view>
     </MainPage>
   </view>
