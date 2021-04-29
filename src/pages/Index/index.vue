@@ -108,8 +108,6 @@ export default {
     this.$nextTick(() => {
     })
   },
-  complete () {
-  },
   methods: {
     ...mapUserActions([
     ]),
@@ -125,10 +123,10 @@ export default {
         this.BannerList = [...res.data.data]
         this.GetIndexHotList().then((res) => {
           this.HotList = [...res.data.data]
-        })
-        this.GetIndexNewestArticle({ urlData: { pageSize: 10, pageNum: 1 } }).then((res) => {
-          this.NewestArticleList = [...res.data.data.records]
-          this.$refs.MainPage.ShowPage()
+          this.GetIndexNewestArticle({ urlData: { pageSize: 10, pageNum: 1 } }).then((res) => {
+            this.NewestArticleList = [...res.data.data.records]
+            this.$refs.MainPage.HideLoading()
+          })
         })
       })
     },

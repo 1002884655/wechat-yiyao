@@ -50,7 +50,7 @@ const ToolClass = {
     if (queryData) {
       config.url += '?' + queryData
     }
-    let Header = {}
+    let Header = { 'Access-Control-Expose-Headers': 'X-Authorization-JWT' }
     if (wx.getStorageSync('token') !== '' && wx.getStorageSync('tokentime') !== '' && wx.getStorageSync('tokentime') - 0 + 24 * 60 * 60 * 1000 >= Date.now()) { // 本地获取token
       Header['X-Authorization-JWT'] = wx.getStorageSync('token')
     }
@@ -60,7 +60,7 @@ const ToolClass = {
       ...(config.data || {}),
       header: { ...Header },
       success: (res) => {
-        const token = res.header['X-Authorization-JWT'] || res.header['X-Authorization-Jwt']
+        const token = res.data?.token
         if (token) { // 更新本地存储token
           wx.setStorageSync('token', token)
           wx.setStorageSync('tokentime', Date.now())
@@ -95,9 +95,12 @@ const ToolClass = {
         }
       },
       fail: (res) => {
-        if (res.header['X-Authorization-JWT'] !== undefined) { // 更新本地存储token
-          wx.setStorageSync('token', res.header['X-Authorization-JWT'])
+        const token = res.data?.token
+        if (token) { // 更新本地存储token
+          wx.setStorageSync('token', token)
+          wx.setStorageSync('tokentime', Date.now())
         }
+
         if (res.data.code - 0 === 1001) { // token失效
           // wx.navigateTo({ url: '../../pages/SignIn/index' })
           config.error('登录失效')

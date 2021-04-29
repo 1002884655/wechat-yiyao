@@ -61,12 +61,10 @@ export default {
         this.PageList = []
         this.PageData.pageNum = 1
         this.HasNextPage = true
-        this.ToGetPageList(() => {
-          this.$refs.MainPage.ShowPage()
-        })
+        this.ToGetPageList()
       }
     },
-    ToGetPageList (callback = () => {}) {
+    ToGetPageList () {
       if (!this.DataLock && this.HasNextPage) {
         this.DataLock = true
         this.GetMyReadRecords({ queryData: { ...this.PageData } }).then((res) => {
@@ -75,12 +73,11 @@ export default {
           this.DataLock = false
           this.IsPull = false
           this.IsInfinite = false
-          callback()
+          this.$refs.MainPage.HideLoading()
         }).catch(() => {
           this.DataLock = false
           this.IsPull = false
           this.IsInfinite = false
-          callback()
         })
       }
     },

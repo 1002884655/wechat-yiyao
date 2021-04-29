@@ -42,6 +42,7 @@ const App = new Vue({
         success (res) {
           if (res.code) {
             _that.WxLogin({ queryData: { code: res.code } }).then((res) => {
+              console.log('------------->', res)
               wx.setStorageSync('token', res.data.data.token)
               wx.setStorageSync('tokentime', Date.now())
             })

@@ -1,16 +1,16 @@
 <template>
   <view class="MainPage">
     <slot></slot>
-    <view class="PageLoading" v-show="ShowLoading"></view>
+    <view class="LoadingBg" v-show="ShowLoading"></view>
     <view class="PhoneAuthPopup" v-show="ShowPhoneAuthPopup">
       <view class="centerLabel">
         <text>授权手机号</text>
         <text>申请使用您的手机号</text>
         <view class="flex-h">
-          <!-- <text @tap="ShowPhoneAuthPopup = false; $emit('UserInfoChange')">拒绝</text>
-          <view class="flex-item"></view> -->
-          <text class="flex-item">允许</text>
-          <button open-type="getPhoneNumber" @getuserinfo="GetUserPhone">获取授权</button>
+          <text @tap="ShowPhoneAuthPopup = false; toIndexPage()">拒绝</text>
+          <view class="flex-item"></view>
+          <text>允许</text>
+          <button class="autu-btn" open-type="getPhoneNumber" @getphonenumber="GetUserPhone">获取授权</button>
         </view>
       </view>
     </view>
@@ -19,10 +19,10 @@
         <text>授权头像</text>
         <text>申请使用您的头像</text>
         <view class="flex-h">
-          <!-- <text @tap="ShowUserIconAuthPopup = false; $emit('UserInfoChange')">拒绝</text>
-          <view class="flex-item"></view> -->
-          <text class="flex-item">允许</text>
-          <button open-type="getUserInfo" @getuserinfo="GetUserIcon">获取授权</button>
+          <text @tap="ShowUserIconAuthPopup = false; toIndexPage()">拒绝</text>
+          <view class="flex-item"></view>
+          <text>允许</text>
+          <button @tap="GetUserIcon">获取授权</button>
         </view>
       </view>
     </view>
@@ -66,25 +66,37 @@ export default {
   },
   computed: {
     ...mapUserState({
-      UserInfo: x => x.UserInfo // 用户信息
+      UserInfo: x => x.UserInfo, // 用户信息
+      Student: x => x.UserInfo.student, // 学生信息
     })
   },
   components: {
   },
   created () {
-    this.Init()
+    wx.showToast({ title: '加载中', icon: 'loading' })
+  },
+  mounted () {
+    this.$nextTick(() => {
+      this.Init()
+    })
   },
   methods: {
     ...mapUserActions([
       'WxGetPhoneAuth',
       'WxLogin',
-      'PutUserInfo'
+      'PutUserInfo',
+      'WxAuthUserInfo',
     ]),
     ...mapUserMutations([
-      'EditUserInfo'
+      'EditUserInfo',
+      'UpdateUserInfo',
     ]),
+    toIndexPage () {
+      Taro.reLaunch({
+        url: '/pages/Index/index'
+      })
+    },
     Init () {
-      wx.showLoading({ title: '加载中', icon: 'loading' })
       const _that = this
       let CurrentPageRoute = Taro.getCurrentPages()[Taro.getCurrentPages().length - 1].route
       if (this.UserInfo === null) {
@@ -123,30 +135,44 @@ export default {
         }
       }
     },
-    ShowPage () {
+    HideLoading () {
       this.ShowLoading = false
       wx.hideLoading()
     },
     GetUserIcon (e) {
-      if (e.detail.userInfo.avatarUrl) {
-        this.PutUserInfo({ data: { data: { avatar: e.detail.userInfo.avatarUrl, personId: this.UserInfo.personId } } }).then(() => {
-          this.EditUserInfo({ name: 'avatar', value: e.detail.userInfo.avatarUrl })
-          this.ShowUserIconAuthPopup = false
-          if (!this.UserInfo.phone) {
-            this.ShowPhoneAuthPopup = true
+      console.log('-----e------->', e)
+      wx.getUserProfile({
+        desc: '用于获取个人昵称与头像等',
+        success: (res) => {
+          if (res.errMsg === 'getUserProfile:ok') {
+            const data = {
+              signature: res.signature,
+              rawData: res.rawData,
+              encryptedData: res.encryptedData,
+              iv: res.iv,
+              sessionKey: this.UserInfo.sessionKey,
+            }
+
+            this.WxAuthUserInfo({ data: { data } }).then(res => {
+              this.UpdateUserInfo(res.data.data)
+              this.ShowUserIconAuthPopup = false
+              if (!this.UserInfo.phone) {
+                this.ShowPhoneAuthPopup = true
+              }
+            })
           } else {
-            this.$emit('UserInfoChange')
+            if (!this.UserInfo.phone) {
+              this.ShowPhoneAuthPopup = true
+            }
           }
-        })
-      } else {
-        if (!this.UserInfo.phone) {
-          this.ShowPhoneAuthPopup = true
-        } else {
-          this.$emit('UserInfoChange')
         }
-      }
+      })
     },
     GetUserPhone (e) {
+      if (e.detail.errMsg !== 'getPhoneNumber:ok') {
+        return
+      }
+
       for (let key in this.WxInfoData) {
         this.WxInfoData[key] = e.detail[key]
       }

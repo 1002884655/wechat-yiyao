@@ -35,7 +35,7 @@
             <scroll-view scroll-y="true" style="height: 100%;" :refresher-enabled="true" @refresherrefresh="OnRefresh" :refresher-triggered="IsPull" refresher-background="none" refresher-default-style="black">
               <view class="Content">
                 <view class="ListItem" v-for="(item, index) in PageList" :key="index">
-                  <BodyCheckItem :Data="item"></BodyCheckItem>
+                  <BodyCheckItem></BodyCheckItem>
                 </view>
               </view>
               <PageBottom></PageBottom>
@@ -86,7 +86,7 @@ export default {
   },
   methods: {
     ...mapUserActions([
-      'GetMyBodyCheckList'
+      'GetBodyCheckList'
     ]),
     ...mapUserMutations([
     ]),
@@ -95,26 +95,23 @@ export default {
         this.PageList = []
         this.PageData.pageNum = 1
         this.HasNextPage = true
-        this.ToGetPageList(() => {
-          this.$refs.MainPage.ShowPage()
-        })
+        this.ToGetPageList()
       }
     },
-    ToGetPageList (callback = () => { }) {
+    ToGetPageList () {
       if (!this.DataLock && this.HasNextPage) {
         this.DataLock = true
-        this.GetMyBodyCheckList({ queryData: { ...this.PageData } }).then((res) => {
+        this.GetBodyCheckList({ queryData: { ...this.PageData } }).then((res) => {
           this.PageList = this.PageList.concat(res.data.data.records || [])
           this.HasNextPage = res.data.data.current - 0 < res.data.data.pages - 0
           this.DataLock = false
           this.IsPull = false
           this.IsInfinite = false
-          callback()
+          this.$refs.MainPage.HideLoading()
         }).catch(() => {
           this.DataLock = false
           this.IsPull = false
           this.IsInfinite = false
-          callback()
         })
       }
     },

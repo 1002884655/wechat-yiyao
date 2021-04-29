@@ -96,7 +96,9 @@ export default {
       'GetSearchArticleList'
     ]),
     Init () {
-      this.$refs.MainPage.ShowPage()
+      if (this.$refs.MainPage) {
+        this.$refs.MainPage.HideLoading()
+      }
     },
     Search () {
       this.GetSearchArticleList({ queryData: { pageNum: 1, pageSize: 10000, name: this.SearchKey } }).then((res) => {

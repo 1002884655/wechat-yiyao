@@ -7,7 +7,7 @@ const Api = {
     url: `${prefix}/ma/auth-phone`
   },
   WxGetUserIconAuth: { // 微信获取用户头像
-    method: 'post',
+    method: 'put',
     url: `${prefix}/ma/auth-user`
   },
   WxLogin: { // 微信登录
@@ -16,7 +16,7 @@ const Api = {
   },
   UpdateUserInfo: { // 更新用户信息
     method: 'put',
-    url: `${prefix}/ma/person`
+    url: `${prefix}/ma/student`
   },
   GetIndexBanner: { // 获取首页banner
     method: 'get',
@@ -70,10 +70,16 @@ const Api = {
     method: 'post',
     url: `${prefix}/ma/answer-test`
   },
-  GetMyBodyCheckList: { // 获取我的体检记录
+  GetBodyCheckList: { // 获取体检列表
     method: 'get',
     url: `${prefix}/ma/test-log`
-  }
+  },
+  GetSchoolList: {
+    url: `${prefix}/ma/school`
+  },
+  GetSpecialtyList: {
+    url: `${prefix}/ma/specialty`
+  },
 }
 
 export default Api

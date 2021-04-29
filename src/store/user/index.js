@@ -16,12 +16,20 @@ export default {
     },
     UpdateUserInfo (state, data) {
       state.UserInfo = { ...state.UserInfo, ...data }
+    },
+    UpdateStudentInfo (state, data) {
+      state.UserInfo = { ...state.UserInfo, student: data }
     }
   },
   actions: {
     WxGetPhoneAuth (context, payload) { // 微信获取手机号
       return new Promise((resolve, reject) => {
         ToolClass.ToolRequest({ url: Api.WxGetPhoneAuth.url, method: Api.WxGetPhoneAuth.method, ...payload, success (res) { resolve(res) }, error (res) { reject(res) } })
+      })
+    },
+    WxAuthUserInfo (context, payload) { // 授权头像，昵称
+      return new Promise((resolve, reject) => {
+        ToolClass.ToolRequest({ url: Api.WxGetUserIconAuth.url, method: Api.WxGetUserIconAuth.method, ...payload, success (res) { resolve(res) }, error (res) { reject(res) } })
       })
     },
     WxLogin (context, payload) { // 微信登录
@@ -31,7 +39,7 @@ export default {
     },
     PutUserInfo (context, payload) { // 更新用户信息
       return new Promise((resolve, reject) => {
-        ToolClass.ToolRequest({ url: Api.UpdateUserInfo.url, method: Api.UpdateUserInfo.method, ...payload, success (res) { context.commit('UpdateUserInfo', res.data.data.person); resolve(res) }, error (res) { reject(res) } })
+        ToolClass.ToolRequest({ url: Api.UpdateUserInfo.url, method: Api.UpdateUserInfo.method, ...payload, success (res) { context.commit('UpdateStudentInfo', res.data.data.person); resolve(res) }, error (res) { reject(res) } })
       })
     },
     GetCurrentPersonInfo (context, payload) { // 获取当前人员信息
@@ -74,9 +82,9 @@ export default {
         ToolClass.ToolRequest({ url: Api.GetArticleTypeList.url, method: Api.GetArticleTypeList.method, ...payload, success (res) { resolve(res) }, error (res) { reject(res) } })
       })
     },
-    GetMyBodyCheckList (context, payload) { // 获取我的体检记录
+    GetBodyCheckList (context, payload) { // 获取体检列表
       return new Promise((resolve, reject) => {
-        ToolClass.ToolRequest({ url: Api.GetMyBodyCheckList.url, method: Api.GetMyBodyCheckList.method, ...payload, success (res) { resolve(res) }, error (res) { reject(res) } })
+        ToolClass.ToolRequest({ url: Api.GetBodyCheckList.url, method: Api.GetBodyCheckList.method, ...payload, success (res) { resolve(res) }, error (res) { reject(res) } })
       })
     }
   }

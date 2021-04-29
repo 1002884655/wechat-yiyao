@@ -49,7 +49,17 @@
           <view class="flex-h">
             <view><text class="Point">*</text>学校</view>
             <view class="flex-item">
-              <input placeholder="请输入学校" v-model="Form.schoolName" />
+              <Picker v-model="Form.schoolId" :range="schoolList" @change="handleSchoolChange" label-key="name" value-key="schoolId">
+                <text style="font-size: 14px;">{{ Form.schoolName || '请选择学校' }}</text>
+              </Picker>
+            </view>
+          </view>
+          <view class="flex-h">
+            <view><text class="Point">*</text>专业</view>
+            <view class="flex-item">
+              <Picker v-model="Form.specialtyId" :range="specialtyList" @change="handleSpecialtyChange" label-key="name" value-key="specialtyId">
+                <text style="font-size: 14px;">{{ Form.specialtyName || '请选择专业' }}</text>
+              </Picker>
             </view>
           </view>
           <view class="flex-h">
@@ -61,7 +71,7 @@
           <view class="flex-h">
             <view><text class="Point">*</text>学号</view>
             <view class="flex-item">
-              <input placeholder="请输入学号" v-model="Form.studentId" />
+              <input placeholder="请输入学号" v-model="Form.studentNo" />
             </view>
           </view>
           <view class="Save">
@@ -74,9 +84,14 @@
 </template>
 
 <script>
-import MainPage from '../../../components/MainPage'
+import MainPage from '@/components/MainPage'
+import Picker from '@/components/Picker'
 import { createNamespacedHelpers } from 'vuex'
+import ToolClass from '@/util/PublicMethod'
+import Api from '@/util/Api'
+
 const { mapState: mapUserState, mapActions: mapUserActions, mapMutations: mapUserMutations } = createNamespacedHelpers('user')
+
 export default {
   name: 'MyInfo',
   data () {
@@ -89,29 +104,41 @@ export default {
       IsPull: false,
       DataLock: false,
       Form: {
+        studentId: null,
         name: null,
         personId: null,
         sex: null,
         phone: null,
         email: null,
+        schoolId: null,
         schoolName: null,
         schoolBatch: null,
-        studentId: null
-      }
+        specialtyId: null,
+        specialtyName: null,
+        studentNo: null
+      },
+      schoolList: [],
+      specialtyList: [],
     }
   },
   computed: {
     ...mapUserState({
-      UserInfo: x => x.UserInfo // 用户信息
+      UserInfo: x => x.UserInfo, // 用户信息
+      Student: x => x.UserInfo.student || {}, // 学生信息
     })
   },
   components: {
-    MainPage
+    MainPage,
+    Picker,
   },
   created () {
+    this.getSchoolList()
   },
   mounted () {
     this.$nextTick(() => {
+      if (this.$refs.MainPage) {
+        this.$refs.MainPage.HideLoading()
+      }
     })
   },
   methods: {
@@ -119,14 +146,19 @@ export default {
       'PutUserInfo'
     ]),
     ...mapUserMutations([
-      'UpdateUserInfo'
+      'UpdateUserInfo',
+      'UpdateStudentInfo',
     ]),
     Init () {
       if (this.UserInfo !== null) {
         for (let key in this.Form) {
           this.Form[key] = this.UserInfo[key]
         }
-        this.$refs.MainPage.ShowPage()
+      }
+      if (this.Student !== null) {
+        for (let key in this.Form) {
+          this.Form[key] = this.Student[key]
+        }
       }
     },
     SexChange (e) {
@@ -144,13 +176,14 @@ export default {
         }
         this.PutUserInfo({ data: { data: { ...Data } } }).then((res) => {
           console.log(res.data.data)
-          this.UpdateUserInfo({ ...res.data.data })
+          this.UpdateStudentInfo({ ...res.data.data })
           wx.showToast({
             title: '保存成功',
             icon: 'none',
             duration: 2000
           })
           this.DataLock = false
+          Taro.navigateBack({ delta: 1 })
         }).catch(() => {
           this.DataLock = false
         })
@@ -161,6 +194,32 @@ export default {
       window.setTimeout(() => {
         this.IsPull = false
       }, 1000)
+    },
+    getSchoolList () {
+      ToolClass.ToolRequest({
+        ...Api.GetSchoolList,
+        success: (res) => {
+          this.schoolList = res.data.data
+        }
+      })
+    },
+    getSpecialtyList (schoolId) {
+      ToolClass.ToolRequest({
+        ...Api.GetSpecialtyList,
+        queryData: { schoolId },
+        success: (res) => {
+          this.specialtyList = res.data.data
+        }
+      })
+    },
+    handleSchoolChange (school) {
+      this.Form.schoolName = school.name
+      this.Form.specialtyId = null
+      this.Form.specialtyName = null
+      this.getSpecialtyList(school.schoolId)
+    },
+    handleSpecialtyChange (specialty) {
+      this.Form.specialtyName = specialty.name
     }
   }
 }

@@ -13,30 +13,31 @@
           </view>
         </view>
 
+        <!-- 分类 -->
+        <view class="ArticleClass">
+          <scroll-view class="ScrollContainer" scroll-x="true" style="width: 100%">
+            <view class="ListContainer">
+              <view v-for="(item, index) in MenuList" :key="index" class="MenuItem" :class="{'active': item.typeId === CurrentMenuId}" @tap="CutMenu(item)">{{item.name}}</view>
+            </view>
+          </scroll-view>
+        </view>
+
         <!-- 内容 -->
         <view class="flex-item">
-          <view class="flex-h">
+          <view>
+            <scroll-view scroll-y="true" style="height: 100%;" :refresher-enabled="true" @refresherrefresh="OnRefresh" :refresher-triggered="IsPull" refresher-background="none" refresher-default-style="black">
+              <view class="Content">
 
-            <!-- 左侧菜单 -->
-            <view class="LeftMenu">
-              <scroll-view :scroll-y="true" :enhanced="true" :show-scrollbar="false" style="height: 100%;">
-                <view v-for="(item, index) in MenuList" :key="index" class="MenuItem" :class="{'active': item.typeId === CurrentMenuId}" @tap="CutMenu(item)">{{item.name}}</view>
-              </scroll-view>
-            </view>
-
-            <!-- 右侧内容 -->
-            <view class="RightContent flex-item">
-              <view>
-                <scroll-view :scroll-y="true" :enhanced="true" :show-scrollbar="false" style="height: 100%;" @scrolltolower="Infinite">
-                  <view class="BookList">
-                    <view v-for="(item, index) in PageList" :key="index">
-                      <BookItem :Data="item"></BookItem>
-                    </view>
+                <view class="ArticleList">
+                  <view v-for="(item, index) in PageList" :key="index">
+                    <BookItem :Data="item"></BookItem>
                   </view>
-                </scroll-view>
-              </view>
-            </view>
+                </view>
 
+                <PageBottom></PageBottom>
+
+              </view>
+            </scroll-view>
           </view>
         </view>
       </view>
@@ -47,6 +48,7 @@
 <script>
 import MainPage from '../../components/MainPage'
 import BookItem from '../../components/BookItem'
+import PageBottom from '../../components/PageBottom'
 import { createNamespacedHelpers } from 'vuex'
 const { mapState: mapUserState, mapActions: mapUserActions, mapMutations: mapUserMutations } = createNamespacedHelpers('user')
 const { mapActions: mapIndexActions } = createNamespacedHelpers('index')
@@ -54,6 +56,7 @@ export default {
   name: 'Study',
   data () {
     return {
+      IsPull: false,
       IsInfinite: false,
       DataLock: false,
       CurrentMenuId: null,
@@ -73,7 +76,8 @@ export default {
   },
   components: {
     MainPage,
-    BookItem
+    BookItem,
+    PageBottom
   },
   created () {
   },
@@ -93,31 +97,41 @@ export default {
     Init () {
       if (this.UserInfo !== null) {
         this.MenuList = []
-        this.HasNextPage = true
         this.GetArticleTypeList({ pageNum: 1, pageSize: 1000, status: 1 }).then((res) => {
           this.MenuList = res.data.data.records || []
           if (this.MenuList.length) {
             this.CurrentMenuId = this.MenuList[0].typeId
-            this.ToGetPageList(() => {
-              this.$refs.MainPage.ShowPage()
-            })
+            this.PageList = []
+            this.PageData.pageNum = 1
+            this.HasNextPage = true
+            this.ToGetPageList()
           }
         })
       }
     },
-    ToGetPageList (callback = () => {}) {
+    ToGetPageList () {
       if (!this.DataLock && this.HasNextPage) {
         this.DataLock = true
         this.GetSearchArticleList({ queryData: { ...this.PageData, status: 1, typeId: this.CurrentMenuId } }).then((res) => {
-          this.HasNextPage = res.data.data.current - 0 < res.data.data.pages - 0
           this.PageList = this.PageList.concat(res.data.data.records || [])
+          this.HasNextPage = res.data.data.current - 0 < res.data.data.pages - 0
           this.DataLock = false
-          callback()
+          this.IsPull = false
+          this.IsInfinite = false
+          this.$refs.MainPage.HideLoading()
         }).then((res) => {
           this.DataLock = false
-          callback()
+          this.IsPull = false
+          this.IsInfinite = false
         })
       }
+    },
+    OnRefresh () {
+      this.IsPull = true
+      this.PageList = []
+      this.PageData.pageNum = 1
+      this.HasNextPage = true
+      this.ToGetPageList()
     },
     CutMenu (item) {
       if (!this.DataLock) {

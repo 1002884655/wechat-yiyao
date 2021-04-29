@@ -50,7 +50,7 @@
               </view>
 
               <!-- 去答题 -->
-              <view class="ToAnswer" v-show="ArticleInfo.name">
+              <view class="ToAnswer">
                 <navigator :url="`/pages/Index/BookAnswer/index?id=${ArticleInfo.postId}`" hover-class="none">去答题</navigator>
               </view>
 
@@ -61,8 +61,7 @@
         </view>
 
         <!-- 底部 -->
-        <view class="flex-h Bottom" v-show="ArticleInfo.name">
-          <button open-type="share" class="ShareBtn">分享</button>
+        <view class="flex-h Bottom">
           <view class="Share" @tap="ShareArticle">
             <text class="iconfont iconfenxiang"></text>
             <text>分享</text>
@@ -107,7 +106,8 @@ export default {
   },
   computed: {
     ...mapUserState({
-      UserInfo: x => x.UserInfo // 用户信息
+      UserInfo: x => x.UserInfo, // 用户信息
+      Student: x => x.UserInfo.student, // 用户信息
     })
   },
   components: {
@@ -139,9 +139,10 @@ export default {
       if (this.UserInfo !== null) {
         this.GetArticleDetail({ urlData: { id: Taro.getCurrentInstance().router.params.id } }).then((res) => {
           this.ArticleInfo = res.data.data || {}
-          this.$refs.MainPage.ShowPage()
+          this.$refs.MainPage.HideLoading()
         })
-        if (this.UserInfo.studentId === null || this.UserInfo.studentId === '') {
+
+        if (!this.Student?.studentId) {
           if (this.$refs.MainPage) {
             this.$refs.MainPage.ShowStudentIdPopup = true
           }

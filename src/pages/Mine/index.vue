@@ -6,11 +6,12 @@
 
           <!-- 头部 -->
           <view class="TopContainer">
+            <view class="Bg centerLabel"></view>
             <view class="UserIcon">
               <image mode="aspectFill" :src="UserInfo.avatar" class="centerLabel"></image>
             </view>
             <view class="UserName">{{UserInfo.nickName || '-'}}</view>
-            <view class="UserNo">学号：{{UserInfo.studentId || '-'}}</view>
+            <view class="UserNo">学号：{{Student.studentNo || '-'}}</view>
           </view>
 
           <!-- 信息卡 -->
@@ -18,7 +19,7 @@
             <view>
               <view class="School flex-h">
                 <text>学校：</text>
-                <text class="flex-item">{{UserInfo.schoolName || '-'}}</text>
+                <text class="flex-item">{{Student.schoolName || '-'}}</text>
                 <navigator url="/pages/Mine/MyInfo/index" hover-class="none">
                   <text>完善信息</text>
                   <text class="iconfont iconjiantouright"></text>
@@ -28,7 +29,7 @@
                 <view>
                   <view class="flex-h">
                     <text>专业：</text>
-                    <text class="flex-item">{{UserInfo.specialtyName || '-'}}</text>
+                    <text class="flex-item">{{Student.specialtyName || '-'}}</text>
                   </view>
                   <view class="flex-h">
                     <text>手机号：</text>
@@ -36,7 +37,7 @@
                   </view>
                   <view class="flex-h">
                     <text>学届：</text>
-                    <text class="flex-item">{{UserInfo.schoolBatch}}</text>
+                    <text class="flex-item">{{Student.schoolBatch}}</text>
                   </view>
                 </view>
                 <view class="flex-item">
@@ -84,7 +85,8 @@ export default {
   },
   computed: {
     ...mapUserState({
-      UserInfo: x => x.UserInfo // 用户信息
+      UserInfo: x => x.UserInfo, // 用户信息
+      Student: x => x.UserInfo.student || {} // 学生信息
     })
   },
   components: {
@@ -105,7 +107,7 @@ export default {
     Init () {
       if (this.UserInfo !== null) {
         this.GetCurrentPersonInfo().then(() => {
-          this.$refs.MainPage.ShowPage()
+          this.$refs.MainPage.HideLoading()
         })
       }
     },

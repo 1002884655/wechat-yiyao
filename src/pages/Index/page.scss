@@ -6,14 +6,19 @@
   > .Search {
     position: relative;
     overflow: hidden;
-    background: #f4c819;
+    // background: #f4c819;
+    background: #fff;
     padding: 20px 30px;
+    box-shadow: 0 0 6px 6px rgba(0, 0, 0, 0.03);
+    z-index: 2;
     > view {
       position: relative;
       overflow: hidden;
       background: #fff;
-      border-radius: 6px;
+      border-radius: 20px;
       align-items: center;
+      box-sizing: border-box;
+      border: 2px solid #333;
       > text {
         font-size: 32px;
         color: #333;
@@ -25,7 +30,7 @@
           display: block;
           width: 100%;
           font-size: 28px;
-          line-height: 60px;
+          line-height: 72px;
           color: #999;
         }
       }
@@ -34,6 +39,7 @@
   > .flex-item {
     position: relative;
     overflow: hidden;
+    z-index: 1;
     > view {
       width: 100%;
       position: absolute;
@@ -94,7 +100,7 @@
               .RecommendItem {
                 display: inline-block;
                 vertical-align: middle;
-                width: calc((100vw - 90px) / 3);
+                width: calc((100vw - 120px) / 3);
                 position: relative;
                 overflow: hidden;
                 margin-right: 30px;
