@@ -55,7 +55,7 @@
               </view>
 
               <!-- 去答题 -->
-              <view class="ToAnswer">
+              <view class="ToAnswer" v-if="ArticleInfo.postTestList && ArticleInfo.postTestList.length">
                 <navigator :url="`/pages/Index/BookAnswer/index?id=${ArticleInfo.postId}`" hover-class="none">去答题</navigator>
               </view>
 
@@ -109,6 +109,11 @@ export default {
   components: {
     MainPage,
     PageBottom
+  },
+  onShow () {
+    if (this.UserInfo.studentId && this.$refs.MainPage) {
+      this.$refs.MainPage.ShowStudentIdPopup = false
+    }
   },
   onShareAppMessage () {
     return {
