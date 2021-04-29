@@ -106,7 +106,8 @@ export default {
   },
   computed: {
     ...mapUserState({
-      UserInfo: x => x.UserInfo // 用户信息
+      UserInfo: x => x.UserInfo, // 用户信息
+      Student: x => x.UserInfo.student, // 用户信息
     })
   },
   components: {
@@ -139,7 +140,8 @@ export default {
         this.GetArticleDetail({ urlData: { id: Taro.getCurrentInstance().router.params.id } }).then((res) => {
           this.ArticleInfo = res.data.data || {}
         })
-        if (this.UserInfo.studentId === null || this.UserInfo.studentId === '') {
+
+        if (!this.Student?.studentId) {
           if (this.$refs.MainPage) {
             this.$refs.MainPage.ShowStudentIdPopup = true
           }
