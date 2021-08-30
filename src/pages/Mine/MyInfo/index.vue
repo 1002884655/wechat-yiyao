@@ -162,8 +162,12 @@ export default {
       }
     },
     SexChange (e) {
-      this.SexIndex = e.detail.value - 0
-      this.Form.sex = this.SexList[e.detail.value - 0].id
+      this.SexList.map((item, index) => {
+        if(item.id === e.id) {
+          this.SexIndex = index
+        }
+      })
+      this.Form.sex = e.id
     },
     Save () {
       if (!this.DataLock) {
@@ -175,8 +179,8 @@ export default {
           }
         }
         this.PutUserInfo({ data: { data: { ...Data } } }).then((res) => {
-          console.log(res.data.data)
           this.UpdateStudentInfo({ ...res.data.data })
+          console.log(this.UserInfo)
           wx.showToast({
             title: '保存成功',
             icon: 'none',
